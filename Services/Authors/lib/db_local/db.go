@@ -29,18 +29,23 @@ const (
 	tablename_authors = "public.authors"
 )
 
-type Author struct {
-	Id          int64 `gorm:"primary key"`
-	FirstName   string
-	LastName    string
-	Description string
-}
-
 func FindAuthorById(db *gorm.DB, where map[string]interface{}) (*Author, error) {
 
-	authorsData := Author{}
+	authorData := Author{}
 
-	tx := db.Table(tablename_authors).Where(where).Select("*").Where(where).Limit(1).Scan(&authorsData)
+	tx := db.Table(tablename_authors).Where(where).Select("*").Where(where).Limit(1).Scan(&authorData)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return nil, fmt.Errorf("%s%s%s", "Записи в БД ", tablename_authors, " не найдены")
+	}
+	return &authorData, nil
+}
+func FindAuthors(db *gorm.DB, where map[string]interface{}) (*Authors, error) {
+	authorsData := Authors{}
+
+	tx := db.Table(tablename_authors).Where(where).Select("*").Where(where).Scan(&authorsData.Authors)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
