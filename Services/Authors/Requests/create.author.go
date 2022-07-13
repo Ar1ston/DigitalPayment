@@ -16,9 +16,11 @@ type ResponseCreateAuthor struct {
 	Error string `json:"error,omitempty"`
 }
 
-func (request *RequestCreateAuthor) Validation() {
+func (request *RequestCreateAuthor) Validation() *error {
 
+	return nil
 }
-func (request *RequestCreateAuthor) Execute() {
+func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
 
+	return nil, nil
 }

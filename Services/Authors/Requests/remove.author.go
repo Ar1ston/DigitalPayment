@@ -13,9 +13,11 @@ type ResponseRemoveAuthor struct {
 	Error string `json:"error,omitempty"`
 }
 
-func (request *RequestRemoveAuthor) Validation() {
+func (request *RequestRemoveAuthor) Validation() *error {
 
+	return nil
 }
-func (request *RequestRemoveAuthor) Execute() {
+func (request *RequestRemoveAuthor) Execute() ([]byte, *error) {
 
+	return nil, nil
 }

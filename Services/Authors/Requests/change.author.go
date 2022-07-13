@@ -16,9 +16,11 @@ type ResponseChangeAuthor struct {
 	Error string `json:"error,omitempty"`
 }
 
-func (request *RequestChangeAuthor) Validation() {
+func (request *RequestChangeAuthor) Validation() *error {
 
+	return nil
 }
-func (request *RequestChangeAuthor) Execute() {
+func (request *RequestChangeAuthor) Execute() ([]byte, *error) {
 
+	return nil, nil
 }
