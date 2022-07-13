@@ -1,17 +1,27 @@
 package Requests
 
+import (
+	"DigitalPayment/Services/Authors/lib/db_local"
+	"bytes"
+	"encoding/gob"
+	"fmt"
+)
+
 func init() {
 
 }
 
 type RequestGetAuthors struct{}
-type ResponseGetAuthors struct {
+type Author struct {
 	Id          uint64 `json:"id"`
-	First_name  string `json:"firstName,omitempty"`
-	Last_name   string `json:"lastName,omitempty"`
+	FirstName   string `json:"firstName,omitempty"`
+	LastName    string `json:"lastName,omitempty"`
 	Description string `json:"description,omitempty"`
-	Errno       uint64 `json:"errno"`
-	Error       string `json:"error,omitempty"`
+}
+type ResponseGetAuthors struct {
+	Authors []Author
+	Errno   uint64 `json:"errno"`
+	Error   string `json:"error,omitempty"`
 }
 
 func (request *RequestGetAuthors) Validation() *error {
@@ -19,6 +29,35 @@ func (request *RequestGetAuthors) Validation() *error {
 	return nil
 }
 func (request *RequestGetAuthors) Execute() ([]byte, *error) {
+	fmt.Printf("REQUEST: %+v\n", request)
 
-	return nil, nil
+	rpl := ResponseGetAuthors{}
+
+	authors, err := db_local.FindAuthors(db_local.DB_LOCAL, map[string]interface{}{})
+
+	if err != nil {
+		rpl.Error = err.Error()
+		rpl.Errno = 500
+	} else {
+		for _, v := range authors.Authors {
+			rpl.Authors = append(rpl.Authors, Author{
+				Id:          uint64(v.Id),
+				FirstName:   v.FirstName,
+				LastName:    v.LastName,
+				Description: v.Description,
+			})
+		}
+		rpl.Errno = 0
+	}
+	fmt.Printf("RESPONSE: %+v\n", rpl)
+
+	var rplBytes bytes.Buffer
+	enc := gob.NewEncoder(&rplBytes)
+
+	err = enc.Encode(rpl)
+	if err != nil {
+		return nil, &err
+	}
+
+	return rplBytes.Bytes(), nil
 }

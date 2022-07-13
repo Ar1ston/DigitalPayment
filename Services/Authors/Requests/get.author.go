@@ -15,12 +15,12 @@ type RequestGetAuthor struct {
 	Id uint64 `json:"id"`
 }
 type ResponseGetAuthor struct {
-	Id          uint64 `json:"id" gorm:"id"`
-	FirstName   string `json:"firstName,omitempty" gorm:"FirstName"`
-	LastName    string `json:"lastName,omitempty" gorm:"LastName"`
-	Description string `json:"description,omitempty" gorm:"Description"`
-	Errno       uint64 `json:"errno" gorm:"-:all"`
-	Error       string `json:"error,omitempty" gorm:"-:all"`
+	Id          uint64 `json:"id"`
+	FirstName   string `json:"firstName,omitempty"`
+	LastName    string `json:"lastName,omitempty"`
+	Description string `json:"description,omitempty"`
+	Errno       uint64 `json:"errno"`
+	Error       string `json:"error,omitempty"`
 }
 
 func (request *RequestGetAuthor) Validation() *error {
