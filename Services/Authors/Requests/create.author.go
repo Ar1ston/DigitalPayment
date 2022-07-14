@@ -47,7 +47,7 @@ func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
 		rpl.Error = err.Error()
 		rpl.Errno = 500
 	} else {
-		rpl.Id = uint64(author)
+		rpl.Id = uint64(author.Id)
 		rpl.Errno = 0
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
