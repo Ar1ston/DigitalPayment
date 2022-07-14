@@ -1,11 +1,17 @@
 package Requests
 
+import (
+	"DigitalPayment/Services/Authors/lib/db_local"
+	"bytes"
+	"encoding/gob"
+	"fmt"
+)
+
 func init() {
 
 }
 
 type RequestCreateAuthor struct {
-	Id          uint64 `json:"id"`
 	First_name  string `json:"firstName,omitempty"`
 	Last_name   string `json:"lastName,omitempty"`
 	Description string `json:"description,omitempty"`
@@ -21,6 +27,28 @@ func (request *RequestCreateAuthor) Validation() *error {
 	return nil
 }
 func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
+	fmt.Printf("REQUEST: %+v\n", request)
 
-	return nil, nil
+	rpl := ResponseCreateAuthor{}
+
+	author, err := db_local.CreateAuthor(db_local.DB_LOCAL, request.First_name, request.Last_name, request.Description)
+
+	if err != nil {
+		rpl.Error = err.Error()
+		rpl.Errno = 500
+	} else {
+		rpl.Id = uint64(author)
+		rpl.Errno = 0
+	}
+	fmt.Printf("RESPONSE: %+v\n", rpl)
+
+	var rplBytes bytes.Buffer
+	enc := gob.NewEncoder(&rplBytes)
+
+	err = enc.Encode(rpl)
+	if err != nil {
+		return nil, &err
+	}
+
+	return rplBytes.Bytes(), nil
 }

@@ -54,3 +54,30 @@ func FindAuthors(db *gorm.DB, where map[string]interface{}) (*Authors, error) {
 	}
 	return &authorsData, nil
 }
+func CreateAuthor(db *gorm.DB, first_name string, last_name string, description string) (int, error) {
+	var err error
+
+	//проверка, что такое автор уже есть
+	tx, err := FindAuthors(db, map[string]interface{}{
+		"FirstName": first_name,
+		"LastName":  last_name,
+	})
+
+	if err == nil && tx != nil {
+		err = fmt.Errorf("автор '%s' уже существует", first_name+" "+last_name)
+		return 0, err
+	}
+
+	authorData := Author{
+		FirstName:   first_name,
+		LastName:    last_name,
+		Description: description,
+	}
+	txx := db.Create(&authorData)
+
+	if authorData.Id == 0 || txx.Error != nil || txx.RowsAffected == 0 {
+		err = fmt.Errorf("ошибка записи в БД Authors %s", tablename_authors)
+		return 0, err
+	}
+	return int(authorData.Id), nil
+}
