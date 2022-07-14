@@ -23,7 +23,17 @@ type ResponseCreateAuthor struct {
 }
 
 func (request *RequestCreateAuthor) Validation() *error {
-
+	var err error
+	if request.First_name == "" {
+		err = fmt.Errorf("%s", "Неверное поле FirstName в запросе")
+		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
+		return &err
+	}
+	if request.Last_name == "" {
+		err = fmt.Errorf("%s", "Неверное поле LastName в запросе")
+		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
+		return &err
+	}
 	return nil
 }
 func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
