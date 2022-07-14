@@ -38,14 +38,14 @@ func FindAuthorById(db *gorm.DB, where map[string]interface{}) (*Author, error) 
 		return nil, tx.Error
 	}
 	if tx.RowsAffected == 0 {
-		return nil, fmt.Errorf("%s%s%s", "Записи в БД ", tablename_authors, " не найдены")
+		return nil, fmt.Errorf("записи в БД %s не найдены", tablename_authors)
 	}
 	return &authorData, nil
 }
 func FindAuthors(db *gorm.DB, where map[string]interface{}) (*Authors, error) {
 	authorsData := Authors{}
 
-	tx := db.Table(tablename_authors).Where(where).Select("*").Where(where).Scan(&authorsData.Authors)
+	tx := db.Table(tablename_authors).Select("*").Where(where).Scan(&authorsData.Authors)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}
@@ -101,4 +101,14 @@ func ChangeAuthorById(db *gorm.DB, where map[string]interface{}, update map[stri
 
 	return &authorData, nil
 
+}
+func RemoveAuthorById(db *gorm.DB, author *Author) error {
+	tx := db.Where("id = ?", author.Id).Delete(author)
+	if tx.Error != nil {
+		return tx.Error
+	}
+	if tx.RowsAffected == 0 {
+		return fmt.Errorf("записи в БД %s не найдены", tablename_authors)
+	}
+	return nil
 }
