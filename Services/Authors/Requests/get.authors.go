@@ -2,7 +2,7 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
-	"DigitalPayment/Services/Authors/lib/reflect_local"
+	"DigitalPayment/Services/Authors/lib/register_requests"
 	"bytes"
 	"encoding/gob"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 
 func init() {
 	method := "GetAuthors"
-	reflect_local.Register(method, (*RequestGetAuthors)(nil))
+	register_requests.Register(method, (*RequestGetAuthors)(nil))
 	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 

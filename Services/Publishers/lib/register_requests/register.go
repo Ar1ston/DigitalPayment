@@ -1,7 +1,7 @@
-package reflect_local
+package register_requests
 
 import (
-	"DigitalPayment/Services/Books/Models"
+	"DigitalPayment/Services/Publishers/Models"
 	"reflect"
 )
 

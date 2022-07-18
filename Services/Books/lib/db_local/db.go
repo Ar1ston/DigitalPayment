@@ -83,7 +83,7 @@ func CreateBook(db *gorm.DB, book *Book) (*Book, error) {
 		AddedTime:   book.AddedTime,
 		Description: book.Description,
 	}
-	txx := db.Create(&bookData)
+	txx := db.Table(tablename_books).Create(&bookData)
 
 	if bookData.Id == 0 || txx.Error != nil || txx.RowsAffected == 0 {
 		err = fmt.Errorf("ошибка записи в БД Books %s", tablename_books)

@@ -2,7 +2,7 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
-	"DigitalPayment/Services/Books/lib/reflect_local"
+	"DigitalPayment/Services/Books/lib/register_requests"
 	"bytes"
 	"encoding/gob"
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 func init() {
 	method := "GetBook"
-	reflect_local.Register(method, (*RequestGetBook)(nil))
+	register_requests.Register(method, (*RequestGetBook)(nil))
 	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 

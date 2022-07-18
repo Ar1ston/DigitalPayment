@@ -73,7 +73,7 @@ func CreateAuthor(db *gorm.DB, first_name string, last_name string, description 
 		LastName:    last_name,
 		Description: description,
 	}
-	txx := db.Create(&authorData)
+	txx := db.Table(tablename_authors).Create(&authorData)
 
 	if authorData.Id == 0 || txx.Error != nil || txx.RowsAffected == 0 {
 		err = fmt.Errorf("ошибка записи в БД Authors %s", tablename_authors)

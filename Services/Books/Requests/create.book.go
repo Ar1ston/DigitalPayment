@@ -2,7 +2,7 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
-	"DigitalPayment/Services/Books/lib/reflect_local"
+	"DigitalPayment/Services/Books/lib/register_requests"
 	"bytes"
 	"encoding/gob"
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 func init() {
 	method := "CreateBook"
-	reflect_local.Register(method, (*RequestCreateBook)(nil))
+	register_requests.Register(method, (*RequestCreateBook)(nil))
 	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 
@@ -43,7 +43,7 @@ func (request *RequestCreateBook) Execute() ([]byte, *error) {
 
 	rpl := ResponseCreateBook{}
 
-	req := Book{
+	req := db_local.Book{
 		Name:        request.Name,
 		Genre:       request.Genre,
 		Author:      int64(request.Author),
@@ -54,7 +54,7 @@ func (request *RequestCreateBook) Execute() ([]byte, *error) {
 	}
 
 	//TODO не факт что заработает
-	book, err := db_local.CreateBook(db_local.DB_LOCAL, (*db_local.Book)(&req))
+	book, err := db_local.CreateBook(db_local.DB_LOCAL, &req)
 
 	if err != nil {
 		rpl.Error = err.Error()
