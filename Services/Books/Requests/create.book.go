@@ -1,6 +1,16 @@
 package Requests
 
-import "time"
+import (
+	"DigitalPayment/Services/Books/lib/reflect_local"
+	"fmt"
+	"time"
+)
+
+func init() {
+	method := "CreateBook"
+	reflect_local.Register(method, (*RequestCreateBook)(nil))
+	fmt.Printf("Метод %s инициализирован!\n", method)
+}
 
 type RequestCreateBook struct {
 	Name        string    `json:"name,omitempty"`
@@ -17,9 +27,11 @@ type ResponseCreateBook struct {
 	Error string `json:"error,omitempty"`
 }
 
-func (request *RequestCreateBook) Validation() {
+func (request *RequestCreateBook) Validation() *error {
 
+	return nil
 }
-func (request *RequestCreateBook) Execute() {
+func (request *RequestCreateBook) Execute() ([]byte, *error) {
 
+	return nil, nil
 }

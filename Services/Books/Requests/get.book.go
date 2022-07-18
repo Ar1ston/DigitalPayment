@@ -1,6 +1,16 @@
 package Requests
 
-import "time"
+import (
+	"DigitalPayment/Services/Books/lib/reflect_local"
+	"fmt"
+	"time"
+)
+
+func init() {
+	method := "GetBook"
+	reflect_local.Register(method, (*RequestGetBook)(nil))
+	fmt.Printf("Метод %s инициализирован!\n", method)
+}
 
 type RequestGetBook struct {
 	Id   uint64 `json:"id"`
@@ -19,9 +29,11 @@ type ResponseGetBook struct {
 	Error       string    `json:"error,omitempty"`
 }
 
-func (request *RequestGetBook) Validation() {
+func (request *RequestGetBook) Validation() *error {
 
+	return nil
 }
-func (request *RequestGetBook) Execute() {
+func (request *RequestGetBook) Execute() ([]byte, *error) {
 
+	return nil, nil
 }

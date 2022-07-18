@@ -1,7 +1,14 @@
 package Requests
 
-func init() {
+import (
+	"DigitalPayment/Services/Books/lib/reflect_local"
+	"fmt"
+)
 
+func init() {
+	method := "ChangeBook"
+	reflect_local.Register(method, (*RequestChangeBook)(nil))
+	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 
 type RequestChangeBook struct {
@@ -18,9 +25,11 @@ type ResponseChangeBook struct {
 	Error string `json:"error,omitempty"`
 }
 
-func (request *RequestChangeBook) Validation() {
+func (request *RequestChangeBook) Validation() *error {
 
+	return nil
 }
-func (request *RequestChangeBook) Execute() {
+func (request *RequestChangeBook) Execute() ([]byte, *error) {
 
+	return nil, nil
 }
