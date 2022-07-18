@@ -8,7 +8,7 @@ type Book struct {
 	Genre       string
 	Author      int64
 	Publisher   int64
-	AddedUser   int64
+	AddedUser   int64 `gorm:"AddedUser"`
 	AddedTime   time.Time
 	Description string
 }

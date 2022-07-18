@@ -15,7 +15,6 @@ func init() {
 }
 
 type RequestCreatePublisher struct {
-	Id          uint64 `json:"id"`
 	Name        string `json:"name,omitempty"`
 	Description string `json:"description,omitempty"`
 }

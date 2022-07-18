@@ -60,7 +60,7 @@ func CreatePublisher(db *gorm.DB, publisher *Publisher) (*Publisher, error) {
 
 	//проверка, что такой издатель уже есть
 	tx, err := FindPublishers(db, map[string]interface{}{
-		"Name": publisher.Name,
+		"name": publisher.Name,
 	})
 
 	if err == nil && tx != nil {

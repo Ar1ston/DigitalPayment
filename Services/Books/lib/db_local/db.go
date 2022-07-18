@@ -60,16 +60,12 @@ func CreateBook(db *gorm.DB, book *Book) (*Book, error) {
 
 	//проверка, что такая книга уже есть
 	tx, err := FindBooks(db, map[string]interface{}{
-		"Name":        book.Name,
-		"Genre":       book.Genre,
-		"Author":      book.Author,
-		"Publisher":   book.Publisher,
-		"AddedUser":   book.AddedUser,
-		"AddedTime":   book.AddedTime,
-		"Description": book.Description,
+		"name":      book.Name,
+		"author":    book.Author,
+		"publisher": book.Publisher,
 	})
 
-	if err == nil && tx != nil {
+	if err == nil && tx.Books != nil {
 		err = fmt.Errorf("книга '%s' уже существует", book.Name+" "+book.Genre)
 		return nil, err
 	}
