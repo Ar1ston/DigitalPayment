@@ -2,13 +2,16 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
+	"DigitalPayment/Services/Authors/lib/reflect_local"
 	"bytes"
 	"encoding/gob"
 	"fmt"
 )
 
 func init() {
-
+	method := "ChangeAuthor"
+	reflect_local.Register(method, (*RequestChangeAuthor)(nil))
+	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 
 type RequestChangeAuthor struct {

@@ -2,13 +2,16 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
+	"DigitalPayment/Services/Authors/lib/reflect_local"
 	"bytes"
 	"encoding/gob"
 	"fmt"
 )
 
 func init() {
-
+	method := "CreateAuthor"
+	reflect_local.Register(method, (*RequestCreateAuthor)(nil))
+	fmt.Printf("Метод %s инициализирован!\n", method)
 }
 
 type RequestCreateAuthor struct {
