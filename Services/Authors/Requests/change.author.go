@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+func Hello() {}
 func init() {
 	method := "ChangeAuthor"
 	register_requests.Register(method, (*RequestChangeAuthor)(nil))

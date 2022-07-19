@@ -3,12 +3,11 @@ package register_requests
 import (
 	"DigitalPayment/lib/Models"
 	"fmt"
-	"net/http"
 )
 
-func FindStruct(r *http.Request) (Models.Logic, error) {
+func FindStruct(method string) (Models.Logic, error) {
 
-	registered, ok := registeredMessages[r.Header.Get("method")]
+	registered, ok := registeredMessages[method]
 	if !ok {
 		return nil, fmt.Errorf("%s", "Метод не найден")
 	}
