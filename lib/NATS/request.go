@@ -16,7 +16,7 @@ type RequestNats struct {
 }
 
 func (req *RequestNats) SendRequestToNats(nats *nats.Conn) ([]byte, error) {
-	resp, err := nats.Request(req.To, BytesOf(req), 7*time.Second)
+	resp, err := nats.Request(req.To, toBytes(req), 7*time.Second)
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +31,7 @@ func (req *RequestNats) SendRequestToNats(nats *nats.Conn) ([]byte, error) {
 	}
 	return rpl.Msg, nil
 }
-func BytesOf(message interface{}) []byte {
+func toBytes(message interface{}) []byte {
 
 	js, err := json.Marshal(message)
 	if err != nil {

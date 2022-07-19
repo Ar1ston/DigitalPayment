@@ -26,9 +26,9 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.authors (
     id integer NOT NULL,
-    "FirstName" character varying DEFAULT ''::character varying NOT NULL,
-    "LastName" character varying DEFAULT ''::character varying NOT NULL,
-    "Description" character varying DEFAULT ''::character varying NOT NULL
+    "firstName" character varying DEFAULT ''::character varying NOT NULL,
+    "lastName" character varying DEFAULT ''::character varying NOT NULL,
+    "description" character varying DEFAULT ''::character varying NOT NULL
 );
 
 
@@ -67,7 +67,7 @@ ALTER TABLE ONLY public.authors ALTER COLUMN id SET DEFAULT nextval('public.auth
 -- Data for Name: authors; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.authors (id, "FirstName", "LastName", "Description") FROM stdin;
+COPY public.authors (id, "firstName", "lastName", "description") FROM stdin;
 1	Неизвестно	Неизвестно	Неизвестно
 \.
 

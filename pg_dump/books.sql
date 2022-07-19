@@ -28,11 +28,11 @@ CREATE TABLE public.books (
     id integer NOT NULL,
     author integer DEFAULT 1 NOT NULL,
     publisher integer DEFAULT 1 NOT NULL,
-    "AddedUser" integer DEFAULT 1 NOT NULL,
-    "AddedTime" timestamp without time zone,
-    "Description" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
-    "Name" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
-    "Genre" character varying DEFAULT 'Неизвестно'::character varying NOT NULL
+    "addedUser" integer DEFAULT 1 NOT NULL,
+    "addedTime" timestamp without time zone,
+    "description" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
+    "name" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
+    "genre" character varying DEFAULT 'Неизвестно'::character varying NOT NULL
 );
 
 
@@ -71,7 +71,7 @@ ALTER TABLE ONLY public.books ALTER COLUMN id SET DEFAULT nextval('public.books_
 -- Data for Name: books; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.books (id, author, publisher, "AddedUser", "AddedTime", "Description", "Name", "Genre") FROM stdin;
+COPY public.books (id, author, publisher, "addedUser", "addedTime", "description", "name", "genre") FROM stdin;
 \.
 
 

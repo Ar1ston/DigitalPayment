@@ -26,10 +26,10 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.users (
     id integer NOT NULL,
-    "Login" character varying NOT NULL,
-    "Password" character varying NOT NULL,
-    "Name" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
-    "Level" integer DEFAULT 1 NOT NULL
+    "login" character varying NOT NULL,
+    "password" character varying NOT NULL,
+    "name" character varying DEFAULT 'Неизвестно'::character varying NOT NULL,
+    "level" integer DEFAULT 1 NOT NULL
 );
 
 
@@ -68,7 +68,7 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 -- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.users (id, "Login", "Password", "Name", "Level") FROM stdin;
+COPY public.users (id, "login", "password", "name", "level") FROM stdin;
 1	Неизвестно	 	Неизвестно	1
 \.
 
@@ -99,14 +99,8 @@ CREATE UNIQUE INDEX users_id_uindex ON public.users USING btree (id);
 -- Name: users_login_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX users_login_uindex ON public.users USING btree ("Login");
+CREATE UNIQUE INDEX users_login_uindex ON public.users USING btree ("login");
 
-
---
--- Name: users_password_uindex; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE UNIQUE INDEX users_password_uindex ON public.users USING btree ("Password");
 
 
 --

@@ -26,8 +26,8 @@ SET default_table_access_method = heap;
 
 CREATE TABLE public.publishers (
     id integer NOT NULL,
-    "Name" character varying NOT NULL,
-    "Description" character varying DEFAULT 'Неизвестно'::character varying NOT NULL
+    "name" character varying NOT NULL,
+    "description" character varying DEFAULT 'Неизвестно'::character varying NOT NULL
 );
 
 
@@ -66,7 +66,7 @@ ALTER TABLE ONLY public.publishers ALTER COLUMN id SET DEFAULT nextval('public.p
 -- Data for Name: publishers; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.publishers (id, "Name", "Description") FROM stdin;
+COPY public.publishers (id, "name", "description") FROM stdin;
 1	Неизвестно	Неизвестно
 \.
 
@@ -97,7 +97,7 @@ CREATE UNIQUE INDEX publishers_id_uindex ON public.publishers USING btree (id);
 -- Name: publishers_name_uindex; Type: INDEX; Schema: public; Owner: postgres
 --
 
-CREATE UNIQUE INDEX publishers_name_uindex ON public.publishers USING btree ("Name");
+CREATE UNIQUE INDEX publishers_name_uindex ON public.publishers USING btree ("name");
 
 
 --
