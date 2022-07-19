@@ -2,7 +2,7 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
-	"DigitalPayment/Services/Books/lib/register_requests"
+	"DigitalPayment/lib/register_requests"
 	"bytes"
 	"encoding/gob"
 	"fmt"

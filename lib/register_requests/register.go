@@ -1,7 +1,7 @@
 package register_requests
 
 import (
-	"DigitalPayment/Services/Authors/Models"
+	"DigitalPayment/lib/Models"
 	"reflect"
 )
 
