@@ -15,6 +15,66 @@ func (_ tApp) Index() string {
 	return revel.MainRouter.Reverse("App.Index", args).URL
 }
 
+type tAuthors struct{}
+
+var Authors tAuthors
+
+func (_ tAuthors) Authors() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Authors.Authors", args).URL
+}
+
+type tBooks struct{}
+
+var Books tBooks
+
+func (_ tBooks) Books() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Books.Books", args).URL
+}
+
+type tLogin struct{}
+
+var Login tLogin
+
+func (_ tLogin) Login() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Login.Login", args).URL
+}
+
+type tPublishers struct{}
+
+var Publishers tPublishers
+
+func (_ tPublishers) Publishers() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Publishers.Publishers", args).URL
+}
+
+type tRegistration struct{}
+
+var Registration tRegistration
+
+func (_ tRegistration) Registration() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Registration.Registration", args).URL
+}
+
+type tUsers struct{}
+
+var Users tUsers
+
+func (_ tUsers) Users() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Users.Users", args).URL
+}
+
 type tStatic struct{}
 
 var Static tStatic

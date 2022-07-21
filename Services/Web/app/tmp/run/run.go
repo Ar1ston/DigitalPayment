@@ -44,6 +44,72 @@ func Register() {
 			},
 		})
 
+	revel.RegisterController((*controllers.Authors)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Authors",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Books)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Books",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Login)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Login",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Publishers)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Publishers",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Registration)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Registration",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Users)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Users",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					13: []string{},
+				},
+			},
+		})
+
 	revel.RegisterController((*controllers0.Static)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{

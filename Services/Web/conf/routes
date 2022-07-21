@@ -8,6 +8,10 @@ module:testrunner
 
 
 GET     /                                       App.Index
+GET     /Authors                                Authors.Authors
+GET     /Books                                  Books.Books
+GET     /Publishers                             Publishers.Publishers
+GET     /Users                                  Users.Users
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
