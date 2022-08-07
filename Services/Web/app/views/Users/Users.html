@@ -1,6 +1,19 @@
 {{template "header.html" .}}
-<body>
+<br>
 <a>Users</a>
+<br>
+<button href="">Add</button>
+<ul>
+    {{range .usrs}}
+    <li>
+        <div>
+            <b>{{ .Name}}</b>
+            <b>{{ .Level}}</b>
+        </div>
+    </li>
+    {{else}}
+    <li><b>no rows</b></li>
+    {{end}}
 
-</body>
+</ul>
 {{template "footer.html" .}}

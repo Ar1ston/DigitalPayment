@@ -7,6 +7,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/nats-io/nats-server/v2 v2.8.4 // indirect
 	github.com/nats-io/nats.go v1.16.0
+	github.com/revel/cmd v1.1.2 // indirect
 	github.com/revel/modules v1.1.0
 	github.com/revel/revel v1.1.0
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect

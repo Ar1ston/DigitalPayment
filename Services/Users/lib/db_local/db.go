@@ -16,7 +16,7 @@ func init() {
 		Host:     "localhost",
 		Port:     "5432",
 		User:     "postgres",
-		Password: "postgres",
+		Password: "388336",
 		DBName:   "users",
 	}
 	DB_LOCAL, err = dns.ConnectToDatabase()

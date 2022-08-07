@@ -1,7 +1,7 @@
 package main
 
 import (
-	"DigitalPayment/Services/Authors/Requests"
+	"DigitalPayment/Services/Publishers/Requests"
 	"DigitalPayment/lib/NATS"
 	"fmt"
 )

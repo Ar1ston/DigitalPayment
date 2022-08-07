@@ -5,7 +5,7 @@
 package main
 
 import (
-	"DigitalPayment/Services/Web/app/tmp/run"
+	"Web/app/tmp/run"
 	"flag"
 	"github.com/revel/revel"
 )

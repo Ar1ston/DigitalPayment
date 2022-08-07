@@ -1,6 +1,20 @@
 {{template "header.html" .}}
-<body>
+<br>
 <a>Publishers</a>
+<br>
+<button href="">Add publisher</button>
+<ul>
+    {{range .pubs}}
+    <li>
+        <div>
+            <b>{{ .Name}}</b>
+        </div>
+    </li>
+    {{else}}
+    <li><b>no publishers</b></li>
+    {{end}}
 
-</body>
+</ul>
+
+
 {{template "footer.html" .}}

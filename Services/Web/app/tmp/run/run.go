@@ -5,9 +5,9 @@
 package run
 
 import (
-	_ "DigitalPayment/Services/Web/app"
-	controllers "DigitalPayment/Services/Web/app/controllers"
-	tests "DigitalPayment/Services/Web/tests"
+	_ "Web/app"
+	controllers "Web/app/controllers"
+	tests "Web/tests"
 	controllers0 "github.com/revel/modules/static/app/controllers"
 	_ "github.com/revel/modules/testrunner/app"
 	controllers1 "github.com/revel/modules/testrunner/app/controllers"
@@ -50,7 +50,9 @@ func Register() {
 				Name: "Authors",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					13: []string{},
+					91: []string{
+						"auth",
+					},
 				},
 			},
 		})
@@ -83,7 +85,9 @@ func Register() {
 				Name: "Publishers",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					13: []string{},
+					89: []string{
+						"pubs",
+					},
 				},
 			},
 		})
@@ -105,7 +109,9 @@ func Register() {
 				Name: "Users",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					13: []string{},
+					90: []string{
+						"usrs",
+					},
 				},
 			},
 		})

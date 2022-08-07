@@ -1,6 +1,21 @@
 {{template "header.html" .}}
-<body>
+<br>
 <a>Authors</a>
+<br>
+<button href="">Add</button>
+<ul>
+    {{range .auth}}
+    <li>
+        <div>
+            <b>{{ .FirstName}}</b>
+            <b>{{ .LastName}}</b>
+        </div>
+    </li>
+    {{else}}
+    <li><b>no rows</b></li>
+    {{end}}
 
-</body>
+</ul>
+
+
 {{template "footer.html" .}}
