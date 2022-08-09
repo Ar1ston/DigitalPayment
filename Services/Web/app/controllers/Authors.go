@@ -32,7 +32,7 @@ func (c Authors) Authors() revel.Result {
 
 	ConnNats, err := nats.ConnectToNATS()
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	fmt.Println("Запрос в натц")
@@ -44,7 +44,7 @@ func (c Authors) Authors() revel.Result {
 	req.RequestName = "GetAuthors"
 	rpl, err := req.SendRequestToNats(ConnNats)
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	fmt.Println("Запрос сделан")
@@ -56,7 +56,7 @@ func (c Authors) Authors() revel.Result {
 	dec := gob.NewDecoder(rplBytes)
 	err = dec.Decode(&resp)
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 	fmt.Println("Декодирование 1. Конец.")
 
@@ -68,25 +68,17 @@ func (c Authors) Authors() revel.Result {
 	dec = gob.NewDecoder(respServBytes)
 	err = dec.Decode(&respService)
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 	fmt.Println("Декодирование 2. Конец.")
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	var auth []author
 	auth = respService.Authors
-	//auth = append(auth, author{FirstName: "Name",
-	//	LastName:    "LastName",
-	//	Description: "Desc"})
-	//auth = append(auth, author{FirstName: "Name2",
-	//	LastName:    "LastName2",
-	//	Description: "Desc2"})
-	//auth = append(auth, author{FirstName: "Name3",
-	//	LastName:    "LastName3",
-	//	Description: "Desc3"})
+
 	return c.Render(auth)
 }

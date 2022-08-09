@@ -25,6 +25,16 @@ type ResponseGetPublisher struct {
 	Error       string `json:"error,omitempty"`
 }
 
+func (request *RequestGetPublisher) Decode(decReq []byte) *error {
+
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestGetPublisher) Validation() *error {
 	var err error
 	if request.Id == 0 {
@@ -40,7 +50,7 @@ func (request *RequestGetPublisher) Execute() ([]byte, *error) {
 	rpl := ResponseGetPublisher{}
 
 	publisher, err := db_local.FindPublisherById(db_local.DB_LOCAL, map[string]interface{}{
-		"id": request.Id,
+		"id": &request.Id,
 	})
 
 	if err != nil {

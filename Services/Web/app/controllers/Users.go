@@ -31,7 +31,7 @@ func (c Users) Users() revel.Result {
 
 	ConnNats, err := nats.ConnectToNATS()
 	if err != nil {
-		return c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	fmt.Println("Запрос в натц")
@@ -43,7 +43,7 @@ func (c Users) Users() revel.Result {
 	req.RequestName = "GetUsers"
 	rpl, err := req.SendRequestToNats(ConnNats)
 	if err != nil {
-		return c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	fmt.Println("Запрос сделан")
@@ -55,7 +55,7 @@ func (c Users) Users() revel.Result {
 	dec := gob.NewDecoder(rplBytes)
 	err = dec.Decode(&resp)
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 	fmt.Println("Декодирование 1. Конец.")
 
@@ -67,13 +67,13 @@ func (c Users) Users() revel.Result {
 	dec = gob.NewDecoder(respServBytes)
 	err = dec.Decode(&respService)
 	if err != nil {
-		c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 	fmt.Println("Декодирование 2. Конец.")
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(App.Index)
+		return c.Redirect(Login.Login)
 	}
 
 	var usrs []user

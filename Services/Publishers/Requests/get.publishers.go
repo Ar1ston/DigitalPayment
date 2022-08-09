@@ -26,6 +26,9 @@ type ResponseGetPublishers struct {
 	Error      string      `json:"error,omitempty"`
 }
 
+func (request *RequestGetPublishers) Decode(decReq []byte) *error {
+	return nil
+}
 func (request *RequestGetPublishers) Validation() *error {
 
 	return nil

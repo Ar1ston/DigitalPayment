@@ -53,6 +53,7 @@ func RunWorker(nats_local *nats.Conn, service_name string) {
 
 			fmt.Println("Бизнес логика")
 			//Бизнес логика
+			findStruct.Decode(in_struct.Msg)
 			findStruct.Validation()
 			rpl, _ := findStruct.Execute()
 

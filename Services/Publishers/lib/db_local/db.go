@@ -32,7 +32,7 @@ const (
 func FindPublisherById(db *gorm.DB, where map[string]interface{}) (*Publisher, error) {
 	publisherData := Publisher{}
 
-	tx := db.Table(tablename_publishers).Where(where).Select("*").Limit(1).Scan(&publisherData)
+	tx := db.Table(tablename_publishers).Select("*").Where(where).Limit(1).Scan(&publisherData)
 	if tx.Error != nil {
 		return nil, tx.Error
 	}

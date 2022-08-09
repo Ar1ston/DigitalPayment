@@ -33,24 +33,13 @@ func Run(port int) {
 func Register() {
 	revel.AppLog.Info("Running revel server")
 
-	revel.RegisterController((*controllers.App)(nil),
-		[]*revel.MethodType{
-			&revel.MethodType{
-				Name: "Index",
-				Args: []*revel.MethodArg{},
-				RenderArgNames: map[int][]string{
-					12: []string{},
-				},
-			},
-		})
-
 	revel.RegisterController((*controllers.Authors)(nil),
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Authors",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					91: []string{
+					83: []string{
 						"auth",
 					},
 				},
@@ -64,6 +53,17 @@ func Register() {
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
 					13: []string{},
+				},
+			},
+		})
+
+	revel.RegisterController((*controllers.Error)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Error",
+				Args: []*revel.MethodArg{},
+				RenderArgNames: map[int][]string{
+					12: []string{},
 				},
 			},
 		})
@@ -85,8 +85,20 @@ func Register() {
 				Name: "Publishers",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					89: []string{
+					99: []string{
 						"pubs",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Publisher",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+				},
+				RenderArgNames: map[int][]string{
+					178: []string{
+						"name",
+						"desc",
 					},
 				},
 			},

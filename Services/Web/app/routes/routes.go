@@ -5,16 +5,6 @@ package routes
 
 import "github.com/revel/revel"
 
-type tApp struct{}
-
-var App tApp
-
-func (_ tApp) Index() string {
-	args := make(map[string]string)
-
-	return revel.MainRouter.Reverse("App.Index", args).URL
-}
-
 type tAuthors struct{}
 
 var Authors tAuthors
@@ -35,6 +25,16 @@ func (_ tBooks) Books() string {
 	return revel.MainRouter.Reverse("Books.Books", args).URL
 }
 
+type tError struct{}
+
+var Error tError
+
+func (_ tError) Error() string {
+	args := make(map[string]string)
+
+	return revel.MainRouter.Reverse("Error.Error", args).URL
+}
+
 type tLogin struct{}
 
 var Login tLogin
@@ -53,6 +53,15 @@ func (_ tPublishers) Publishers() string {
 	args := make(map[string]string)
 
 	return revel.MainRouter.Reverse("Publishers.Publishers", args).URL
+}
+
+func (_ tPublishers) Publisher(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Publishers.Publisher", args).URL
 }
 
 type tRegistration struct{}
