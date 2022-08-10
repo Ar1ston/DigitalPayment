@@ -93,6 +93,15 @@ func (_ tUsers) Users() string {
 	return revel.MainRouter.Reverse("Users.Users", args).URL
 }
 
+func (_ tUsers) User(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Users.User", args).URL
+}
+
 type tStatic struct{}
 
 var Static tStatic

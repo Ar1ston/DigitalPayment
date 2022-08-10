@@ -15,16 +15,15 @@ func init() {
 }
 
 type RequestGetUser struct {
-	Login string `json:"login"`
+	Id uint64 `json:"id"`
 }
 type ResponseGetUser struct {
-	Id       uint64 `json:"id"`
-	Password string `json:"password"`
-	Login    string `json:"login"`
-	Name     string `json:"name"`
-	Level    uint64 `json:"level"`
-	Errno    uint64 `json:"errno"`
-	Error    string `json:"error,omitempty"`
+	Id    uint64 `json:"id"`
+	Login string `json:"login"`
+	Name  string `json:"name"`
+	Level uint64 `json:"level"`
+	Errno uint64 `json:"errno"`
+	Error string `json:"error,omitempty"`
 }
 
 func (request *RequestGetUser) Decode(decReq []byte) *error {
@@ -38,7 +37,7 @@ func (request *RequestGetUser) Decode(decReq []byte) *error {
 }
 func (request *RequestGetUser) Validation() *error {
 	var err error
-	if request.Login == "" {
+	if request.Id == 0 {
 		err = fmt.Errorf("%s", "Неверное поле ID в запросе")
 		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetUser: %s\n", err.Error())
 		return &err
@@ -51,7 +50,7 @@ func (request *RequestGetUser) Execute() ([]byte, *error) {
 	rpl := ResponseGetUser{}
 
 	user, err := db_local.FindUser(db_local.DB_LOCAL, map[string]interface{}{
-		"login": request.Login,
+		"id": request.Id,
 	})
 
 	if err != nil {
@@ -59,8 +58,8 @@ func (request *RequestGetUser) Execute() ([]byte, *error) {
 		rpl.Errno = 500
 	} else {
 		rpl.Id = uint64(user.Id)
-		rpl.Password = user.Password
 		rpl.Name = user.Name
+		rpl.Login = user.Login
 		rpl.Level = uint64(user.Level)
 		rpl.Errno = 0
 	}

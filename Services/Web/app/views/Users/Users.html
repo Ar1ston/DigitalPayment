@@ -2,18 +2,19 @@
 <br>
 <a>Users</a>
 <br>
-<button href="">Add</button>
+<button href="">Add user</button>
 <ul>
     {{range .usrs}}
     <li>
         <div>
-            <b>{{ .Name}}</b>
-            <b>{{ .Level}}</b>
+            <a href="/User?id={{ .Id}}">{{ .Login}} (Level {{ .Level}})</a>
         </div>
     </li>
     {{else}}
-    <li><b>no rows</b></li>
+    <li><b>No users</b></li>
     {{end}}
 
 </ul>
+
+
 {{template "footer.html" .}}

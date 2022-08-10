@@ -18,7 +18,7 @@ type RequestGetUsers struct{}
 
 type user struct {
 	Id    uint64 `json:"id"`
-	Name  string `json:"name"`
+	Login string `json:"name"`
 	Level uint64 `json:"level"`
 }
 type ResponseGetUsers struct {
@@ -47,7 +47,7 @@ func (request *RequestGetUsers) Execute() ([]byte, *error) {
 		for _, v := range users.Users {
 			rpl.Users = append(rpl.Users, user{
 				Id:    uint64(v.Id),
-				Name:  v.Name,
+				Login: v.Login,
 				Level: uint64(v.Level),
 			})
 		}

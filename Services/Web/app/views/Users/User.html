@@ -1,0 +1,11 @@
+{{template "header.html" .}}
+<br>
+<a>User</a>
+<br>
+<button href="">Delete user</button>
+<button href="">Change user</button>
+<div>
+  <b>{{ .Name}} ({{ .Login}})</b>
+  <b>Level: {{ .Level}}</b>
+</div>
+{{template "footer.html" .}}
