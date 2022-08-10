@@ -13,6 +13,8 @@ GET     /Books                                  Books.Books
 GET     /Publishers                             Publishers.Publishers
 GET     /Users                                  Users.Users
 GET     /Publisher                              Publishers.Publisher
+GET     /Author                                 Authors.Author
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

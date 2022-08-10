@@ -1,0 +1,13 @@
+{{template "header.html" .}}
+<br>
+<a>Author</a>
+<br>
+<button href="">Delete author</button>
+<button href="">Change author</button>
+<div>
+  <b>{{ .firstName}}</b>
+  <b>{{ .lastName}}</b>
+  <br>
+  <span>{{ .desc}}</span>
+</div>
+{{template "footer.html" .}}

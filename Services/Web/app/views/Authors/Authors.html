@@ -7,8 +7,7 @@
     {{range .auth}}
     <li>
         <div>
-            <b>{{ .FirstName}}</b>
-            <b>{{ .LastName}}</b>
+            <a href="/Author?id={{ .Id}}">{{ .FirstName}} {{ .LastName}}</a>
         </div>
     </li>
     {{else}}

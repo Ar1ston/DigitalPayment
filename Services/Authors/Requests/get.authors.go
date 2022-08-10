@@ -27,6 +27,10 @@ type ResponseGetAuthors struct {
 	Error   string `json:"error,omitempty"`
 }
 
+func (request *RequestGetAuthors) Decode(decReq []byte) *error {
+
+	return nil
+}
 func (request *RequestGetAuthors) Validation() *error {
 
 	return nil

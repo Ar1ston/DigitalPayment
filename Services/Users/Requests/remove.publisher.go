@@ -22,6 +22,15 @@ type ResponseRemoveUser struct {
 	Error string `json:"error,omitempty"`
 }
 
+func (request *RequestRemoveUser) Decode(decReq []byte) *error {
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestRemoveUser) Validation() *error {
 	var err error
 	if request.Id == 0 {

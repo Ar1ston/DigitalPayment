@@ -27,6 +27,9 @@ type ResponseGetUsers struct {
 	Error string `json:"error,omitempty"`
 }
 
+func (request *RequestGetUsers) Decode(decReq []byte) *error {
+	return nil
+}
 func (request *RequestGetUsers) Validation() *error {
 	return nil
 }

@@ -15,6 +15,15 @@ func (_ tAuthors) Authors() string {
 	return revel.MainRouter.Reverse("Authors.Authors", args).URL
 }
 
+func (_ tAuthors) Author(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Authors.Author", args).URL
+}
+
 type tBooks struct{}
 
 var Books tBooks

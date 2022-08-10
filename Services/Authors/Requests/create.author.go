@@ -25,6 +25,16 @@ type ResponseCreateAuthor struct {
 	Error string `json:"error,omitempty"`
 }
 
+func (request *RequestCreateAuthor) Decode(decReq []byte) *error {
+
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestCreateAuthor) Validation() *error {
 	var err error
 	if request.First_name == "" {

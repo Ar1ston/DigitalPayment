@@ -20,12 +20,22 @@ type RequestGetUser struct {
 type ResponseGetUser struct {
 	Id       uint64 `json:"id"`
 	Password string `json:"password"`
+	Login    string `json:"login"`
 	Name     string `json:"name"`
 	Level    uint64 `json:"level"`
 	Errno    uint64 `json:"errno"`
 	Error    string `json:"error,omitempty"`
 }
 
+func (request *RequestGetUser) Decode(decReq []byte) *error {
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestGetUser) Validation() *error {
 	var err error
 	if request.Login == "" {

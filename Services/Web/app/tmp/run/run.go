@@ -39,8 +39,21 @@ func Register() {
 				Name: "Authors",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					83: []string{
+					91: []string{
 						"auth",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Author",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+				},
+				RenderArgNames: map[int][]string{
+					164: []string{
+						"firstName",
+						"lastName",
+						"desc",
 					},
 				},
 			},
