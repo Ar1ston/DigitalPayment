@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"time"
 )
 
 func init() {
@@ -17,14 +16,10 @@ func init() {
 
 type RequestGetBooks struct{}
 type Book struct {
-	Id          int64
-	Name        string
-	Genre       string
-	Author      int64
-	Publisher   int64
-	AddedUser   int64
-	AddedTime   time.Time
-	Description string
+	Id     int64
+	Name   string
+	Genre  string
+	Author int64
 }
 type ResponseGetBooks struct {
 	Books []Book
@@ -32,6 +27,9 @@ type ResponseGetBooks struct {
 	Error string `json:"error,omitempty"`
 }
 
+func (request *RequestGetBooks) Decode(decReq []byte) *error {
+	return nil
+}
 func (request *RequestGetBooks) Validation() *error {
 
 	return nil
@@ -49,14 +47,10 @@ func (request *RequestGetBooks) Execute() ([]byte, *error) {
 	} else {
 		for _, v := range books.Books {
 			rpl.Books = append(rpl.Books, Book{
-				Id:          v.Id,
-				Name:        v.Name,
-				Genre:       v.Genre,
-				Author:      v.Author,
-				Publisher:   v.Publisher,
-				AddedUser:   v.AddedUser,
-				AddedTime:   v.AddedTime,
-				Description: v.Description,
+				Id:     v.Id,
+				Name:   v.Name,
+				Genre:  v.Genre,
+				Author: v.Author,
 			})
 		}
 		rpl.Errno = 0

@@ -34,6 +34,15 @@ func (_ tBooks) Books() string {
 	return revel.MainRouter.Reverse("Books.Books", args).URL
 }
 
+func (_ tBooks) Book(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Books.Book", args).URL
+}
+
 type tError struct{}
 
 var Error tError

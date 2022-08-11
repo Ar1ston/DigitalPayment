@@ -1,6 +1,22 @@
 {{template "header.html" .}}
-<div>
-    <a>Books</a>
-</div>
+<br>
+<a>Books</a>
+<br>
+<button href="">Add book</button>
+<ul>
+    {{range .bks}}
+    <li>
+        <div>
+            <b>{{ .Genre}}</b>
+            <br>
+            <a href="/Book?id={{ .Id}}">{{ .Author}} "{{ .Name}}"</a>
+        </div>
+    </li>
+    {{else}}
+    <li><b>no rows</b></li>
+    {{end}}
+
+</ul>
+
 
 {{template "footer.html" .}}

@@ -16,8 +16,7 @@ func init() {
 }
 
 type RequestGetBook struct {
-	Id   uint64 `json:"id"`
-	Name string `json:"name,omitempty"`
+	Id uint64 `json:"id"`
 }
 type ResponseGetBook struct {
 	Id          uint64    `json:"id"`
@@ -32,6 +31,15 @@ type ResponseGetBook struct {
 	Error       string    `json:"error,omitempty"`
 }
 
+func (request *RequestGetBook) Decode(decReq []byte) *error {
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestGetBook) Validation() *error {
 	var err error
 	if request.Id == 0 {

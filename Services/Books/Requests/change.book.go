@@ -8,6 +8,7 @@ import (
 	"fmt"
 )
 
+func Hello() {}
 func init() {
 	method := "ChangeBook"
 	register_requests.Register(method, (*RequestChangeBook)(nil))
@@ -28,6 +29,15 @@ type ResponseChangeBook struct {
 	Error string `json:"error,omitempty"`
 }
 
+func (request *RequestChangeBook) Decode(decReq []byte) *error {
+	var rplBytes = bytes.NewBuffer(decReq)
+	dec := gob.NewDecoder(rplBytes)
+	err := dec.Decode(request)
+	if err != nil {
+		return &err
+	}
+	return nil
+}
 func (request *RequestChangeBook) Validation() *error {
 	var err error
 	if request.Id == 0 {
