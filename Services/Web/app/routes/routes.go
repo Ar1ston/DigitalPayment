@@ -24,6 +24,43 @@ func (_ tAuthors) Author(
 	return revel.MainRouter.Reverse("Authors.Author", args).URL
 }
 
+func (_ tAuthors) Remove(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Authors.Remove", args).URL
+}
+
+func (_ tAuthors) Change(
+	id int,
+	FirstName string,
+	LastName string,
+	Description string,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "FirstName", FirstName)
+	revel.Unbind(args, "LastName", LastName)
+	revel.Unbind(args, "Description", Description)
+	return revel.MainRouter.Reverse("Authors.Change", args).URL
+}
+
+func (_ tAuthors) Create(
+	FirstName string,
+	LastName string,
+	Description string,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "FirstName", FirstName)
+	revel.Unbind(args, "LastName", LastName)
+	revel.Unbind(args, "Description", Description)
+	return revel.MainRouter.Reverse("Authors.Create", args).URL
+}
+
 type tBooks struct{}
 
 var Books tBooks

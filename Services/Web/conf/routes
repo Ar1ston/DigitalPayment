@@ -16,6 +16,12 @@ GET     /Publisher                              Publishers.Publisher
 GET     /Author                                 Authors.Author
 GET     /User                                   Users.User
 GET     /Book                                   Books.Book
+GET     /Author/Remove                          Authors.Remove
+GET     /Author/Change                          Authors.Change
+POST     /Author/Change                          Authors.Change
+GET     /Author/Create                          Authors.Create
+POST     /Author/Create                          Authors.Create
+
 
 
 
@@ -33,4 +39,4 @@ GET     /public/*filepath                       Static.Serve("public")
 #
 # For rapid development uncomment the following to add new controller.action endpoints
 # without having to add them to the routes table.
-# *       /:controller/:action                    :controller.:action
+GET       /:controller/:action                    :controller.:action

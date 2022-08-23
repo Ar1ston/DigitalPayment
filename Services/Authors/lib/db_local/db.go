@@ -54,24 +54,24 @@ func FindAuthors(db *gorm.DB, where map[string]interface{}) (*Authors, error) {
 	}
 	return &authorsData, nil
 }
-func CreateAuthor(db *gorm.DB, first_name string, last_name string, description string) (*Author, error) {
+func CreateAuthor(db *gorm.DB, FirstName string, LastName string, Description string) (*Author, error) {
 	var err error
 
 	//проверка, что такое автор уже есть
 	tx, err := FindAuthors(db, map[string]interface{}{
-		"FirstName": first_name,
-		"LastName":  last_name,
+		"FirstName": FirstName,
+		"LastName":  LastName,
 	})
 
 	if err == nil && tx != nil {
-		err = fmt.Errorf("автор '%s' уже существует", first_name+" "+last_name)
+		err = fmt.Errorf("автор '%s' уже существует", FirstName+" "+LastName)
 		return nil, err
 	}
 
 	authorData := Author{
-		FirstName:   first_name,
-		LastName:    last_name,
-		Description: description,
+		FirstName:   FirstName,
+		LastName:    LastName,
+		Description: Description,
 	}
 	txx := db.Table(tablename_authors).Create(&authorData)
 
@@ -93,7 +93,7 @@ func ChangeAuthorById(db *gorm.DB, where map[string]interface{}, update map[stri
 		return nil, err
 	}
 
-	txx := db.Model(authorData).Where(where).Updates(update)
+	txx := db.Table(tablename_authors).Where(where).Updates(update)
 	if txx.Error != nil || txx.RowsAffected == 0 {
 		err = fmt.Errorf("ошибка обновления в БД Authors %s", tablename_authors)
 		return nil, err
