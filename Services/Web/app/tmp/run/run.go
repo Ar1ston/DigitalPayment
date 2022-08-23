@@ -39,7 +39,7 @@ func Register() {
 				Name: "Authors",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					112: []string{
+					113: []string{
 						"auth",
 					},
 				},
@@ -50,7 +50,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					185: []string{
+					186: []string{
 						"id",
 						"firstName",
 						"lastName",
@@ -74,7 +74,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					399: []string{
+					401: []string{
 						"id",
 						"firstName",
 						"lastName",
@@ -90,7 +90,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					474: []string{},
+					476: []string{},
 				},
 			},
 		})
@@ -153,7 +153,7 @@ func Register() {
 				Name: "Publishers",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					99: []string{
+					107: []string{
 						"pubs",
 					},
 				},
@@ -165,9 +165,42 @@ func Register() {
 				},
 				RenderArgNames: map[int][]string{
 					178: []string{
+						"id",
 						"name",
 						"desc",
 					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Remove",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+				},
+				RenderArgNames: map[int][]string{},
+			},
+			&revel.MethodType{
+				Name: "Change",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+					&revel.MethodArg{Name: "Name", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
+				},
+				RenderArgNames: map[int][]string{
+					391: []string{
+						"id",
+						"name",
+						"desc",
+					},
+				},
+			},
+			&revel.MethodType{
+				Name: "Create",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "Name", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
+				},
+				RenderArgNames: map[int][]string{
+					465: []string{},
 				},
 			},
 		})

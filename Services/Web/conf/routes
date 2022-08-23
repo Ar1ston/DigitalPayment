@@ -8,19 +8,30 @@ module:testrunner
 
 
 GET     /                                       Login.Login
-GET     /Authors                                Authors.Authors
-GET     /Books                                  Books.Books
-GET     /Publishers                             Publishers.Publishers
-GET     /Users                                  Users.Users
-GET     /Publisher                              Publishers.Publisher
-GET     /Author                                 Authors.Author
-GET     /User                                   Users.User
+
+
 GET     /Book                                   Books.Book
+GET     /Books                                  Books.Books
+
+
+GET     /Users                                  Users.Users
+GET     /User                                   Users.User
+
+GET     /Author                                 Authors.Author
+GET     /Authors                                Authors.Authors
 GET     /Author/Remove                          Authors.Remove
 GET     /Author/Change                          Authors.Change
 POST     /Author/Change                          Authors.Change
 GET     /Author/Create                          Authors.Create
 POST     /Author/Create                          Authors.Create
+
+GET     /Publishers                             Publishers.Publishers
+GET     /Publisher                              Publishers.Publisher
+GET     /Publisher/Remove                          Publishers.Remove
+GET     /Publisher/Change                          Publishers.Change
+POST     /Publisher/Change                          Publishers.Change
+GET     /Publisher/Create                          Publishers.Create
+POST     /Publisher/Create                          Publishers.Create
 
 
 

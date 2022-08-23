@@ -119,6 +119,39 @@ func (_ tPublishers) Publisher(
 	return revel.MainRouter.Reverse("Publishers.Publisher", args).URL
 }
 
+func (_ tPublishers) Remove(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Publishers.Remove", args).URL
+}
+
+func (_ tPublishers) Change(
+	id int,
+	Name string,
+	Description string,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "Name", Name)
+	revel.Unbind(args, "Description", Description)
+	return revel.MainRouter.Reverse("Publishers.Change", args).URL
+}
+
+func (_ tPublishers) Create(
+	Name string,
+	Description string,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "Name", Name)
+	revel.Unbind(args, "Description", Description)
+	return revel.MainRouter.Reverse("Publishers.Create", args).URL
+}
+
 type tRegistration struct{}
 
 var Registration tRegistration

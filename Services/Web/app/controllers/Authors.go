@@ -11,6 +11,7 @@ import (
 type Authors struct {
 	*revel.Controller
 }
+
 type author struct {
 	Id        uint64
 	FirstName string
@@ -254,6 +255,7 @@ func (c Authors) Remove(id int) revel.Result {
 	return c.Redirect(Authors.Authors)
 }
 func (c Authors) Change(id int, FirstName string, LastName string, Description string) revel.Result {
+	fmt.Printf("%d\n", id)
 	if c.Request.Method == "POST" {
 
 		//конфиг
