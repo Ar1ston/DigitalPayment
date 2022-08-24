@@ -36,6 +36,19 @@ type respBook struct {
 	Error       string    `json:"error,omitempty"`
 }
 
+type BookPublishers struct {
+	id   int
+	name string
+}
+type BookUsers struct {
+	id    int
+	login string
+}
+type BookAuthors struct {
+	id   int
+	name string
+}
+
 func (c Books) Books() revel.Result {
 
 	//конфиг
@@ -170,4 +183,78 @@ func (c Books) Book(id int) revel.Result {
 	var description = respService.Description
 
 	return c.Render(name, genre, author, publisher, added_User, added_Time, description)
+}
+func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors) revel.Result {
+	//if c.Request.Method == "POST" {
+	//
+	//	//конфиг
+	//	var nats NATS.ConnectNATS
+	//	nats.Host = "localhost"
+	//	nats.Port = "4222"
+	//
+	//	ConnNats, err := nats.ConnectToNATS()
+	//	if err != nil {
+	//		return c.Redirect(Login.Login)
+	//	}
+	//
+	//	fmt.Println("Запрос в натц")
+	//
+	//	//кодирование сообщения в натц
+	//
+	//	var reqNats requestCreatePublisher
+	//	reqNats.Name = Name
+	//	reqNats.Description = Description
+	//
+	//	var buff4 bytes.Buffer
+	//	enc := gob.NewEncoder(&buff4)
+	//	err = enc.Encode(reqNats)
+	//	if err != nil {
+	//		return c.Redirect(Login.Login)
+	//	}
+	//
+	//	//запрос в натц
+	//	var req NATS.RequestNats
+	//	req.Msg = buff4.Bytes()
+	//	req.To = "Publishers"
+	//	req.From = "Web"
+	//	req.RequestName = "CreatePublisher"
+	//	rpl, err := req.SendRequestToNats(ConnNats)
+	//	if err != nil {
+	//		return c.Redirect(Login.Login)
+	//	}
+	//
+	//	fmt.Println("Запрос сделан")
+	//
+	//	fmt.Println("Декодирование 1")
+	//	//декодирование сообщения натц
+	//	resp := NATS.RequestNats{}
+	//	var rplBytes = bytes.NewBuffer(rpl)
+	//	dec := gob.NewDecoder(rplBytes)
+	//	err = dec.Decode(&resp)
+	//	if err != nil {
+	//		return c.Redirect(Login.Login)
+	//	}
+	//	fmt.Println("Декодирование 1. Конец.")
+	//
+	//	fmt.Println("Декодирование 2")
+	//	//декодирование сообщения сервиса
+	//	fmt.Printf("FROM: %s TO: %s ReqName: %s\n", resp.From, resp.To, resp.RequestName)
+	//	var respService respRemovePublisher
+	//	var respServBytes = bytes.NewBuffer(resp.Msg)
+	//	dec = gob.NewDecoder(respServBytes)
+	//	err = dec.Decode(&respService)
+	//	if err != nil {
+	//		return c.Redirect(Login.Login)
+	//	}
+	//	fmt.Println("Декодирование 2. Конец.")
+	//
+	//	if respService.Errno != 0 {
+	//		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+	//		return c.Redirect(Login.Login)
+	//	}
+	//
+	//	return c.Redirect(Publishers.Publishers)
+	//}else{
+	return c.Render()
+	//}
 }

@@ -80,6 +80,19 @@ func (_ tBooks) Book(
 	return revel.MainRouter.Reverse("Books.Book", args).URL
 }
 
+func (_ tBooks) Create(
+	publishers interface{},
+	users interface{},
+	authors interface{},
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "publishers", publishers)
+	revel.Unbind(args, "users", users)
+	revel.Unbind(args, "authors", authors)
+	return revel.MainRouter.Reverse("Books.Create", args).URL
+}
+
 type tError struct{}
 
 var Error tError

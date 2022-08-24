@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add Publisher</title>
-</head>
-<body>
+{{template "header.html" .}}
+
+<meta charset="UTF-8">
+<title>Add Publisher</title>
+<br>
+<a>Add Publisher</a>
+
 <form method="post">
     <br>
     <label for="Name">Name</label><input type="text" id="Name" name="Name" placeholder="Name" value="">
@@ -13,5 +13,4 @@
     <br>
     <button type="submit">Add</button>
 </form>
-</body>
-</html>
+{{template "footer.html" .}}

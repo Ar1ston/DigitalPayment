@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
+	"fmt"
 	"github.com/nats-io/nats.go"
 	"log"
 	"time"
@@ -41,4 +42,69 @@ func toBytes(message interface{}) []byte {
 	}
 
 	return js
+}
+func RequestToNats(To string, From string, RequestName string, Request interface{}, Response interface{}) error {
+	fmt.Println("Начало отправки запроса в сервис через натс")
+
+	//конфиг
+	var connectNATS ConnectNATS
+	connectNATS.Host = "localhost"
+	connectNATS.Port = "4222"
+
+	ConnNats, err := connectNATS.ConnectToNATS()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Запрос в натц")
+
+	//кодирование сообщения в натц
+	fmt.Println("Кодирование запроса сервиса")
+
+	var buff4 bytes.Buffer
+	enc := gob.NewEncoder(&buff4)
+	err = enc.Encode(Request)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Кодирование запроса сервиса. Конец")
+
+	fmt.Println("Запрос в натц")
+
+	//запрос в натц
+	var req RequestNats
+	req.Msg = buff4.Bytes()
+	req.To = To
+	req.From = From
+	req.RequestName = RequestName
+	rpl, err := req.SendRequestToNats(ConnNats)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Запрос сделан")
+
+	fmt.Println("Декодирование 1")
+	//декодирование сообщения натц
+	resp := RequestNats{}
+	var rplBytes = bytes.NewBuffer(rpl)
+	dec := gob.NewDecoder(rplBytes)
+	err = dec.Decode(&resp)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Декодирование 1. Конец.")
+
+	fmt.Println("Декодирование 2")
+	//декодирование сообщения сервиса
+	fmt.Printf("FROM: %s TO: %s ReqName: %s\n", resp.From, resp.To, resp.RequestName)
+	var respServBytes = bytes.NewBuffer(resp.Msg)
+	dec = gob.NewDecoder(respServBytes)
+	err = dec.Decode(Response)
+	if err != nil {
+		return err
+	}
+	fmt.Println("Декодирование 2. Конец.")
+
+	return nil
 }
