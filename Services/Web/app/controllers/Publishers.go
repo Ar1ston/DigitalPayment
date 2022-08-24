@@ -20,8 +20,8 @@ type respPublishers struct {
 	Error      string `json:"error,omitempty"`
 }
 type respPublisher struct {
-	Id          uint64 `json:"id"`
-	Name        string `json:"name,omitempty"`
+	Id          uint64 `json:"Id"`
+	Name        string `json:"Name,omitempty"`
 	Description string `json:"description,omitempty"`
 	Errno       uint64 `json:"errno"`
 	Error       string `json:"error,omitempty"`
@@ -31,18 +31,18 @@ type respRemovePublisher struct {
 	Error string `json:"error,omitempty"`
 }
 type requestGetPublisher struct {
-	Id uint64 `json:"id"`
+	Id uint64 `json:"Id"`
 }
 type requestRemovePublisher struct {
-	Id uint64 `json:"id"`
+	Id uint64 `json:"Id"`
 }
 type requestChangePublisher struct {
-	Id          uint64 `json:"id"`
-	Name        string `json:"name,omitempty"`
+	Id          uint64 `json:"Id"`
+	Name        string `json:"Name,omitempty"`
 	Description string `json:"description,omitempty"`
 }
 type requestCreatePublisher struct {
-	Name        string `json:"name,omitempty"`
+	Name        string `json:"Name,omitempty"`
 	Description string `json:"description,omitempty"`
 }
 

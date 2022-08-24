@@ -12,10 +12,12 @@ GET     /                                       Login.Login
 
 GET     /Book                                   Books.Book
 GET     /Books                                  Books.Books
-
+GET     /Book/Create                          Books.Create
+POST     /Book/Create                          Books.Create
 
 GET     /Users                                  Users.Users
 GET     /User                                   Users.User
+
 
 GET     /Author                                 Authors.Author
 GET     /Authors                                Authors.Authors

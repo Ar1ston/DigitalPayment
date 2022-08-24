@@ -84,12 +84,24 @@ func (_ tBooks) Create(
 	publishers interface{},
 	users interface{},
 	authors interface{},
+	Name string,
+	Genre string,
+	author int,
+	publisher int,
+	user int,
+	Description string,
 ) string {
 	args := make(map[string]string)
 
 	revel.Unbind(args, "publishers", publishers)
 	revel.Unbind(args, "users", users)
 	revel.Unbind(args, "authors", authors)
+	revel.Unbind(args, "Name", Name)
+	revel.Unbind(args, "Genre", Genre)
+	revel.Unbind(args, "author", author)
+	revel.Unbind(args, "publisher", publisher)
+	revel.Unbind(args, "user", user)
+	revel.Unbind(args, "Description", Description)
 	return revel.MainRouter.Reverse("Books.Create", args).URL
 }
 

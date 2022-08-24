@@ -2,8 +2,6 @@ package controllers
 
 import (
 	"Web/conf/NATS"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 	"github.com/revel/revel"
 	"time"
@@ -23,9 +21,13 @@ type respBooks struct {
 	Errno uint64 `json:"errno"`
 	Error string `json:"error,omitempty"`
 }
-type respBook struct {
-	Id          uint64    `json:"id"`
-	Name        string    `json:"name,omitempty"`
+
+type requestGetBook struct {
+	Id uint64 `json:"Id"`
+}
+type respGetBook struct {
+	Id          uint64    `json:"Id"`
+	Name        string    `json:"Name,omitempty"`
 	Genre       string    `json:"genre,omitempty"`
 	Author      uint64    `json:"author,omitempty"`
 	Publisher   uint64    `json:"publisher,omitempty"`
@@ -36,67 +38,38 @@ type respBook struct {
 	Error       string    `json:"error,omitempty"`
 }
 
+type requestCreateBook struct {
+	Name        string `json:"name,omitempty"`
+	Genre       string `json:"genre,omitempty"`
+	Author      uint64 `json:"author,omitempty"`
+	Publisher   uint64 `json:"publisher,omitempty"`
+	Added_User  uint64 `json:"addedUser,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+type respCreateBook struct {
+	Errno uint64 `json:"errno"`
+	Error string `json:"error,omitempty"`
+}
+
 type BookPublishers struct {
-	id   int
-	name string
+	Id   int
+	Name string
 }
 type BookUsers struct {
-	id    int
-	login string
+	Id    int
+	Login string
 }
 type BookAuthors struct {
-	id   int
-	name string
+	Id   int
+	Name string
 }
 
 func (c Books) Books() revel.Result {
-
-	//конфиг
-	var nats NATS.ConnectNATS
-	nats.Host = "localhost"
-	nats.Port = "4222"
-
-	ConnNats, err := nats.ConnectToNATS()
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-
-	fmt.Println("Запрос в натц")
-	//запрос в натц
-	var req NATS.RequestNats
-	req.Msg = []byte("")
-	req.To = "Books"
-	req.From = "Web"
-	req.RequestName = "GetBooks"
-	rpl, err := req.SendRequestToNats(ConnNats)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-
-	fmt.Println("Запрос сделан")
-
-	fmt.Println("Декодирование 1")
-	//декодирование сообщения натц
-	resp := NATS.RequestNats{}
-	var rplBytes = bytes.NewBuffer(rpl)
-	dec := gob.NewDecoder(rplBytes)
-	err = dec.Decode(&resp)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-	fmt.Println("Декодирование 1. Конец.")
-
-	fmt.Println("Декодирование 2")
-	//декодирование сообщения сервиса
-	fmt.Printf("FROM: %s TO: %s ReqName: %s\n", resp.From, resp.To, resp.RequestName)
 	var respService respBooks
-	var respServBytes = bytes.NewBuffer(resp.Msg)
-	dec = gob.NewDecoder(respServBytes)
-	err = dec.Decode(&respService)
+	err := NATS.RequestToNats("Books", "Web", "GetBooks", []byte(""), &respService)
 	if err != nil {
 		return c.Redirect(Login.Login)
 	}
-	fmt.Println("Декодирование 2. Конец.")
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
@@ -108,66 +81,16 @@ func (c Books) Books() revel.Result {
 	return c.Render(bks)
 }
 func (c Books) Book(id int) revel.Result {
-	//конфиг
-	var nats NATS.ConnectNATS
-	nats.Host = "localhost"
-	nats.Port = "4222"
 
-	ConnNats, err := nats.ConnectToNATS()
+	var reqService requestGetBook
+	reqService.Id = uint64(id)
+	var respService respGetBook
+
+	err := NATS.RequestToNats("Books", "Web", "GetBook", &reqService, &respService)
 	if err != nil {
 		return c.Redirect(Login.Login)
+
 	}
-
-	fmt.Println("Запрос в натц")
-	//запрос в натц
-
-	//кодирование сообщения в натц
-
-	var reqNats requestGetPublisher
-	reqNats.Id = uint64(id)
-
-	var buff4 bytes.Buffer
-	enc := gob.NewEncoder(&buff4)
-	err = enc.Encode(reqNats)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-
-	fmt.Println(string(buff4.Bytes()))
-	var req NATS.RequestNats
-	req.Msg = buff4.Bytes()
-	req.To = "Books"
-	req.From = "Web"
-	req.RequestName = "GetBook"
-	rpl, err := req.SendRequestToNats(ConnNats)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-
-	fmt.Println("Запрос сделан")
-
-	fmt.Println("Декодирование 1")
-	//декодирование сообщения натц
-	resp := NATS.RequestNats{}
-	var rplBytes = bytes.NewBuffer(rpl)
-	dec := gob.NewDecoder(rplBytes)
-	err = dec.Decode(&resp)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-	fmt.Println("Декодирование 1. Конец.")
-
-	fmt.Println("Декодирование 2")
-	//декодирование сообщения сервиса
-	fmt.Printf("FROM: %s TO: %s ReqName: %s\n", resp.From, resp.To, resp.RequestName)
-	var respService respBook
-	var respServBytes = bytes.NewBuffer(resp.Msg)
-	dec = gob.NewDecoder(respServBytes)
-	err = dec.Decode(&respService)
-	if err != nil {
-		return c.Redirect(Login.Login)
-	}
-	fmt.Println("Декодирование 2. Конец.")
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
@@ -184,77 +107,90 @@ func (c Books) Book(id int) revel.Result {
 
 	return c.Render(name, genre, author, publisher, added_User, added_Time, description)
 }
-func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors) revel.Result {
-	//if c.Request.Method == "POST" {
-	//
-	//	//конфиг
-	//	var nats NATS.ConnectNATS
-	//	nats.Host = "localhost"
-	//	nats.Port = "4222"
-	//
-	//	ConnNats, err := nats.ConnectToNATS()
-	//	if err != nil {
-	//		return c.Redirect(Login.Login)
-	//	}
-	//
-	//	fmt.Println("Запрос в натц")
-	//
-	//	//кодирование сообщения в натц
-	//
-	//	var reqNats requestCreatePublisher
-	//	reqNats.Name = Name
-	//	reqNats.Description = Description
-	//
-	//	var buff4 bytes.Buffer
-	//	enc := gob.NewEncoder(&buff4)
-	//	err = enc.Encode(reqNats)
-	//	if err != nil {
-	//		return c.Redirect(Login.Login)
-	//	}
-	//
-	//	//запрос в натц
-	//	var req NATS.RequestNats
-	//	req.Msg = buff4.Bytes()
-	//	req.To = "Publishers"
-	//	req.From = "Web"
-	//	req.RequestName = "CreatePublisher"
-	//	rpl, err := req.SendRequestToNats(ConnNats)
-	//	if err != nil {
-	//		return c.Redirect(Login.Login)
-	//	}
-	//
-	//	fmt.Println("Запрос сделан")
-	//
-	//	fmt.Println("Декодирование 1")
-	//	//декодирование сообщения натц
-	//	resp := NATS.RequestNats{}
-	//	var rplBytes = bytes.NewBuffer(rpl)
-	//	dec := gob.NewDecoder(rplBytes)
-	//	err = dec.Decode(&resp)
-	//	if err != nil {
-	//		return c.Redirect(Login.Login)
-	//	}
-	//	fmt.Println("Декодирование 1. Конец.")
-	//
-	//	fmt.Println("Декодирование 2")
-	//	//декодирование сообщения сервиса
-	//	fmt.Printf("FROM: %s TO: %s ReqName: %s\n", resp.From, resp.To, resp.RequestName)
-	//	var respService respRemovePublisher
-	//	var respServBytes = bytes.NewBuffer(resp.Msg)
-	//	dec = gob.NewDecoder(respServBytes)
-	//	err = dec.Decode(&respService)
-	//	if err != nil {
-	//		return c.Redirect(Login.Login)
-	//	}
-	//	fmt.Println("Декодирование 2. Конец.")
-	//
-	//	if respService.Errno != 0 {
-	//		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-	//		return c.Redirect(Login.Login)
-	//	}
-	//
-	//	return c.Redirect(Publishers.Publishers)
-	//}else{
+func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors, Name string, Genre string, author int, publisher int, user int, Description string) revel.Result {
+	if c.Request.Method == "GET" {
+
+		//Запрашиваем авторов
+		var respServiceAuthor respAuthors
+		err := NATS.RequestToNats("Authors", "Web", "GetAuthors", []byte(""), &respServiceAuthor)
+		if err != nil {
+			return c.Redirect(Login.Login)
+		}
+		if respServiceAuthor.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceAuthor.Errno, respServiceAuthor.Error)
+			return c.Redirect(Login.Login)
+		}
+		var authors []BookAuthors
+		for _, v := range respServiceAuthor.Authors {
+			authors = append(authors, BookAuthors{
+				Id:   int(v.Id),
+				Name: v.FirstName + " " + v.LastName,
+			})
+		}
+
+		//Запрашиваем пользователей
+		var respServiceUser respGetUsers
+		err = NATS.RequestToNats("Users", "Web", "GetUsers", []byte(""), &respServiceUser)
+		if err != nil {
+			return c.Redirect(Login.Login)
+		}
+		if respServiceUser.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceUser.Errno, respServiceUser.Error)
+			return c.Redirect(Login.Login)
+		}
+		var users []BookUsers
+		for _, v := range respServiceUser.Users {
+			users = append(users, BookUsers{
+				Id:    int(v.Id),
+				Login: v.Login,
+			})
+		}
+
+		//Запрашиваем публикаторов
+		var respServicePublisher respPublishers
+		err = NATS.RequestToNats("Publishers", "Web", "GetPublishers", []byte(""), &respServicePublisher)
+		if err != nil {
+			return c.Redirect(Login.Login)
+		}
+		if respServicePublisher.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServicePublisher.Errno, respServicePublisher.Error)
+			return c.Redirect(Login.Login)
+		}
+		var publishers []BookPublishers
+		for _, v := range respServicePublisher.Publishers {
+			publishers = append(publishers, BookPublishers{
+				Id:   int(v.Id),
+				Name: v.Name,
+			})
+		}
+
+		c.Render(publishers, users, authors)
+	}
+	if c.Request.Method == "POST" {
+		fmt.Printf("Name: %s, Genre: %s, Author: %d, Publisher: %d, User: %d, Desc:%s\n", Name, Genre, author, publisher, user, Description)
+
+		var reqService requestCreateBook
+		reqService.Name = Name
+		reqService.Genre = Genre
+		reqService.Author = uint64(author)
+		reqService.Publisher = uint64(publisher)
+		reqService.Added_User = uint64(user)
+		reqService.Description = Description
+		var respService respCreateBook
+
+		err := NATS.RequestToNats("Books", "Web", "CreateBook", &reqService, &respService)
+		if err != nil {
+			return c.Redirect(Login.Login)
+		}
+
+		if respService.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+			return c.Redirect(Login.Login)
+		}
+
+		return c.Redirect(Authors.Authors)
+
+	}
 	return c.Render()
-	//}
+
 }

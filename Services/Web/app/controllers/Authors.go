@@ -22,7 +22,7 @@ type respAuthors struct {
 	Error   string `json:"error,omitempty"`
 }
 type respAuthor struct {
-	Id          uint64 `json:"id"`
+	Id          uint64 `json:"Id"`
 	FirstName   string `json:"firstName,omitempty"`
 	LastName    string `json:"lastName,omitempty"`
 	Description string `json:"description,omitempty"`
@@ -34,13 +34,13 @@ type respRemoveAuthor struct {
 	Error string `json:"error,omitempty"`
 }
 type requestGetAuthor struct {
-	Id uint64 `json:"id"`
+	Id uint64 `json:"Id"`
 }
 type requestRemoveAuthor struct {
-	Id uint64 `json:"id"`
+	Id uint64 `json:"Id"`
 }
 type requestChangeAuthor struct {
-	Id          uint64 `json:"id"`
+	Id          uint64 `json:"Id"`
 	First_name  string `json:"firstName,omitempty"`
 	Last_name   string `json:"lastName,omitempty"`
 	Description string `json:"description,omitempty"`
