@@ -70,6 +70,7 @@ func CreateUser(db *gorm.DB, user *User) (*User, error) {
 		Login:    user.Login,
 		Password: user.Password,
 		Name:     user.Name,
+		Level:    1,
 	}
 	txx := db.Table(tablename_users).Create(&userData)
 

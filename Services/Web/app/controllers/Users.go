@@ -34,6 +34,9 @@ type respGetUser struct {
 }
 
 func (c Users) Users() revel.Result {
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	var respService respGetUsers
 
 	err := NATS.RequestToNats("Users", "Web", "GetUsers", []byte(""), &respService)
@@ -52,6 +55,9 @@ func (c Users) Users() revel.Result {
 	return c.Render(usrs)
 }
 func (c Users) User(id int) revel.Result {
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	var reqService requestGetUser
 	reqService.Id = uint64(id)
 	var respService respGetUser

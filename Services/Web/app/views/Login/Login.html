@@ -8,20 +8,21 @@
         <div class="main_login">
             <div>
                 <label class="login_label"> Login</label>
-                <input type="text" class="login_input" placeholder="Login"><span class="text-danger">*</span>
+                <input type="text" name="login" class="login_input" placeholder="Login"><span class="text-danger">*</span>
             </div>
             <div>
                 <label class="password_label"> Password</label>
-                <input type="password" class="password_input" placeholder="Password"><span class="text-danger">*</span>
+                <input type="password" name="password" class="password_input" placeholder="Password"><span class="text-danger">*</span>
             </div>
             <div>
                 <input type="submit"  class="login_button" value="Log in">
             </div>
-            <div>
-                <label class="text">Don't have an account?</label>
-                <a href="Registration.Reg"> Register</a>
-            </div>
         </div>
     </form>
+            <div>
+                <label class="text">Don't have an account?</label>
+                <a href="{{url "Registration.Registration"}}">Registration</a>
+            </div>
+
 
 </html>

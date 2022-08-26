@@ -52,6 +52,10 @@ type requestCreateAuthor struct {
 }
 
 func (c Authors) Authors() revel.Result {
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+	fmt.Printf("%s", c.Session["login"])
 	var respService respAuthors
 	err := NATS.RequestToNats("Authors", "Web", "GetAuthors", []byte(""), &respService)
 	if err != nil {
@@ -62,13 +66,17 @@ func (c Authors) Authors() revel.Result {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
 		return c.Redirect(Login.Login)
 	}
-
 	var auth []author
 	auth = respService.Authors
 
 	return c.Render(auth)
 }
 func (c Authors) Author(id int) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	var reqService requestGetAuthor
 	reqService.Id = uint64(id)
 	var respService respAuthor
@@ -90,6 +98,11 @@ func (c Authors) Author(id int) revel.Result {
 	return c.Render(id, firstName, lastName, desc)
 }
 func (c Authors) Remove(id int) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	var reqService requestRemoveAuthor
 	reqService.Id = uint64(id)
 
@@ -108,6 +121,11 @@ func (c Authors) Remove(id int) revel.Result {
 	return c.Redirect(Authors.Authors)
 }
 func (c Authors) Change(id int, FirstName string, LastName string, Description string) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	if c.Request.Method == "POST" {
 
 		var reqService requestChangeAuthor
@@ -152,6 +170,11 @@ func (c Authors) Change(id int, FirstName string, LastName string, Description s
 	}
 }
 func (c Authors) Create(FirstName string, LastName string, Description string) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	if c.Request.Method == "POST" {
 
 		var reqService requestCreateAuthor

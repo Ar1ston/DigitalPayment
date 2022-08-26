@@ -7,8 +7,11 @@ module:testrunner
 # module:jobs
 
 
-GET     /                                       Login.Login
+GET     /Login                                       Login.Login
+POST     /Login                                       Login.Login
 
+GET /Registration   Registration.Registration
+POST /Registration Registration.Registration
 
 GET     /Book                                   Books.Book
 GET     /Books                                  Books.Books

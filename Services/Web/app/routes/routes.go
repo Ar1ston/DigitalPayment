@@ -119,9 +119,14 @@ type tLogin struct{}
 
 var Login tLogin
 
-func (_ tLogin) Login() string {
+func (_ tLogin) Login(
+	login string,
+	password string,
+) string {
 	args := make(map[string]string)
 
+	revel.Unbind(args, "login", login)
+	revel.Unbind(args, "password", password)
 	return revel.MainRouter.Reverse("Login.Login", args).URL
 }
 
@@ -181,9 +186,16 @@ type tRegistration struct{}
 
 var Registration tRegistration
 
-func (_ tRegistration) Registration() string {
+func (_ tRegistration) Registration(
+	login string,
+	password string,
+	name string,
+) string {
 	args := make(map[string]string)
 
+	revel.Unbind(args, "login", login)
+	revel.Unbind(args, "password", password)
+	revel.Unbind(args, "name", name)
 	return revel.MainRouter.Reverse("Registration.Registration", args).URL
 }
 

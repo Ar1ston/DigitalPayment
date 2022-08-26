@@ -65,6 +65,11 @@ type BookAuthors struct {
 }
 
 func (c Books) Books() revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	var respService respBooks
 	err := NATS.RequestToNats("Books", "Web", "GetBooks", []byte(""), &respService)
 	if err != nil {
@@ -81,6 +86,10 @@ func (c Books) Books() revel.Result {
 	return c.Render(bks)
 }
 func (c Books) Book(id int) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 
 	var reqService requestGetBook
 	reqService.Id = uint64(id)
@@ -108,6 +117,11 @@ func (c Books) Book(id int) revel.Result {
 	return c.Render(name, genre, author, publisher, added_User, added_Time, description)
 }
 func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors, Name string, Genre string, author int, publisher int, user int, Description string) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
 	if c.Request.Method == "GET" {
 
 		//Запрашиваем авторов

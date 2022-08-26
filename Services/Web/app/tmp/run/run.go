@@ -39,7 +39,7 @@ func Register() {
 				Name: "Authors",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					69: []string{
+					72: []string{
 						"auth",
 					},
 				},
@@ -50,7 +50,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					90: []string{
+					98: []string{
 						"id",
 						"firstName",
 						"lastName",
@@ -74,7 +74,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					151: []string{
+					169: []string{
 						"id",
 						"firstName",
 						"lastName",
@@ -90,7 +90,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					176: []string{},
+					199: []string{},
 				},
 			},
 		})
@@ -101,7 +101,7 @@ func Register() {
 				Name: "Books",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					81: []string{
+					86: []string{
 						"bks",
 					},
 				},
@@ -112,7 +112,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					108: []string{
+					117: []string{
 						"name",
 						"genre",
 						"author",
@@ -137,12 +137,12 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					167: []string{
+					181: []string{
 						"publishers",
 						"users",
 						"authors",
 					},
-					194: []string{},
+					208: []string{},
 				},
 			},
 		})
@@ -162,9 +162,14 @@ func Register() {
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Login",
-				Args: []*revel.MethodArg{},
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "login", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil))},
+				},
 				RenderArgNames: map[int][]string{
-					13: []string{},
+					34: []string{},
+					39: []string{},
+					53: []string{},
 				},
 			},
 		})
@@ -175,7 +180,7 @@ func Register() {
 				Name: "Publishers",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					65: []string{
+					67: []string{
 						"pubs",
 					},
 				},
@@ -186,7 +191,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					85: []string{
+					89: []string{
 						"id",
 						"name",
 						"desc",
@@ -208,7 +213,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					144: []string{
+					153: []string{
 						"id",
 						"name",
 						"desc",
@@ -222,7 +227,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					167: []string{},
+					179: []string{},
 				},
 			},
 		})
@@ -231,9 +236,15 @@ func Register() {
 		[]*revel.MethodType{
 			&revel.MethodType{
 				Name: "Registration",
-				Args: []*revel.MethodArg{},
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "login", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "name", Type: reflect.TypeOf((*string)(nil))},
+				},
 				RenderArgNames: map[int][]string{
-					13: []string{},
+					35: []string{},
+					40: []string{},
+					49: []string{},
 				},
 			},
 		})
@@ -244,7 +255,7 @@ func Register() {
 				Name: "Users",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					52: []string{
+					55: []string{
 						"usrs",
 					},
 				},
@@ -255,7 +266,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					73: []string{
+					79: []string{
 						"Name",
 						"Login",
 						"Level",

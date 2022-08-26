@@ -47,7 +47,9 @@ type requestCreatePublisher struct {
 }
 
 func (c Publishers) Publishers() revel.Result {
-
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	var respService respPublishers
 
 	err := NATS.RequestToNats("Publishers", "Web", "GetPublishers", []byte(""), &respService)
@@ -65,7 +67,9 @@ func (c Publishers) Publishers() revel.Result {
 	return c.Render(pubs)
 }
 func (c Publishers) Publisher(id int) revel.Result {
-
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	var reqService requestGetPublisher
 	reqService.Id = uint64(id)
 	var respService respPublisher
@@ -85,7 +89,9 @@ func (c Publishers) Publisher(id int) revel.Result {
 	return c.Render(id, name, desc)
 }
 func (c Publishers) Remove(id int) revel.Result {
-
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	var reqService requestRemovePublisher
 	reqService.Id = uint64(id)
 
@@ -104,6 +110,9 @@ func (c Publishers) Remove(id int) revel.Result {
 	return c.Redirect(Publishers.Publishers)
 }
 func (c Publishers) Change(id int, Name string, Description string) revel.Result {
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	if c.Request.Method == "POST" {
 
 		var reqService requestChangePublisher
@@ -145,6 +154,9 @@ func (c Publishers) Change(id int, Name string, Description string) revel.Result
 	}
 }
 func (c Publishers) Create(Name string, Description string) revel.Result {
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
 	if c.Request.Method == "POST" {
 
 		var reqService requestCreatePublisher
