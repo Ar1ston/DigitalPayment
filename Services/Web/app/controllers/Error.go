@@ -8,6 +8,6 @@ type Error struct {
 	Msg  string
 }
 
-func (c Error) Error() revel.Result {
-	return c.Render(c.Code, c.Msg)
+func (c Error) Error(Code int, Msg string) revel.Result {
+	return c.Render(Code, Msg)
 }

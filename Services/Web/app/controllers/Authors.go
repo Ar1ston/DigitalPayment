@@ -55,16 +55,15 @@ func (c Authors) Authors() revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
-	fmt.Printf("%s", c.Session["login"])
 	var respService respAuthors
 	err := NATS.RequestToNats("Authors", "Web", "GetAuthors", []byte(""), &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 	var auth []author
 	auth = respService.Authors
@@ -83,12 +82,12 @@ func (c Authors) Author(id int) revel.Result {
 
 	err := NATS.RequestToNats("Authors", "Web", "GetAuthor", &reqService, &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	firstName := respService.FirstName
@@ -110,12 +109,12 @@ func (c Authors) Remove(id int) revel.Result {
 
 	err := NATS.RequestToNats("Authors", "Web", "RemoveAuthor", &reqService, &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	return c.Redirect(Authors.Authors)
@@ -137,12 +136,12 @@ func (c Authors) Change(id int, FirstName string, LastName string, Description s
 
 		err := NATS.RequestToNats("Authors", "Web", "ChangeAuthor", &reqService, &respService)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 
 		if respService.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
 		return c.Redirect(Authors.Authors)
@@ -154,12 +153,12 @@ func (c Authors) Change(id int, FirstName string, LastName string, Description s
 
 		err := NATS.RequestToNats("Authors", "Web", "GetAuthor", &reqService, &respService)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 
 		if respService.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
 		firstName := respService.FirstName
@@ -186,12 +185,12 @@ func (c Authors) Create(FirstName string, LastName string, Description string) r
 
 		err := NATS.RequestToNats("Authors", "Web", "CreateAuthor", &reqService, &respService)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 
 		if respService.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
 		return c.Redirect(Authors.Authors)

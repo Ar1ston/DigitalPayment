@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 	"time"
 )
@@ -30,22 +29,27 @@ type ResponseCreateBook struct {
 }
 
 func (request *RequestCreateBook) Decode(decReq []byte) *error {
-	var rplBytes = bytes.NewBuffer(decReq)
-	dec := gob.NewDecoder(rplBytes)
-	err := dec.Decode(request)
+	err := crypt.Gob_decrypt(decReq, request)
 	if err != nil {
 		return &err
 	}
 	return nil
 }
-func (request *RequestCreateBook) Validation() *error {
-	var err error
+func (request *RequestCreateBook) Validation() []byte {
+	isError := false
+	rpl := ResponseCreateBook{}
 	if request.Name == "" {
-		err = fmt.Errorf("%s", "Неверное поле Name в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestCreateBook: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation Name field in request"
+		fmt.Printf("ERROR VALIDATION CreateBook: %s\n", rpl.Error)
 	}
-	return nil
+	if isError == false {
+		return nil
+	} else {
+		encrypt, _ := crypt.Gob_encrypt(&rpl)
+		return encrypt
+	}
 }
 func (request *RequestCreateBook) Execute() ([]byte, *error) {
 	fmt.Printf("REQUEST: %+v\n", request)
@@ -62,7 +66,6 @@ func (request *RequestCreateBook) Execute() ([]byte, *error) {
 		Description: request.Description,
 	}
 
-	//TODO не факт что заработает
 	book, err := db_local.CreateBook(db_local.DB_LOCAL, &req)
 
 	if err != nil {
@@ -74,13 +77,10 @@ func (request *RequestCreateBook) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 }

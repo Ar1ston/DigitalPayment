@@ -33,6 +33,23 @@ type respGetUser struct {
 	Error string `json:"error,omitempty"`
 }
 
+type requestRemoveUser struct {
+	Id uint64 `json:"id"`
+}
+type respRemoveUser struct {
+	Errno uint64 `json:"errno"`
+	Error string `json:"error,omitempty"`
+}
+
+type requestChangeLevelUser struct {
+	Id    int64 `json:"id"`
+	Level int8  `json:"level"`
+}
+type respChangeLevelUser struct {
+	Errno uint64 `json:"errno"`
+	Error string `json:"error,omitempty"`
+}
+
 func (c Users) Users() revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
@@ -41,12 +58,12 @@ func (c Users) Users() revel.Result {
 
 	err := NATS.RequestToNats("Users", "Web", "GetUsers", []byte(""), &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	var usrs []user
@@ -64,17 +81,63 @@ func (c Users) User(id int) revel.Result {
 
 	err := NATS.RequestToNats("Users", "Web", "GetUser", &reqService, &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	Login := respService.Login
 	Name := respService.Name
 	Level := respService.Level
 
-	return c.Render(Name, Login, Level)
+	return c.Render(id, Name, Login, Level)
+}
+func (c Users) Remove(id int) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
+	var reqService requestRemoveUser
+	reqService.Id = uint64(id)
+
+	var respService respRemoveUser
+
+	err := NATS.RequestToNats("Users", "Web", "RemoveUser", &reqService, &respService)
+	if err != nil {
+		return c.Redirect(Error.Error, 500, "Error server")
+	}
+
+	if respService.Errno != 0 {
+		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
+	}
+
+	return c.Redirect(Users.Users)
+}
+func (c Users) ChangeLevel(id int, level int) revel.Result {
+
+	if c.Session["login"] == nil {
+		return c.Redirect(Login.Login)
+	}
+
+	var reqService requestChangeLevelUser
+	reqService.Id = int64(id)
+	reqService.Level = int8(level)
+	var respService respChangeLevelUser
+
+	err := NATS.RequestToNats("Users", "Web", "ChangeLevelUser", &reqService, &respService)
+	if err != nil {
+		return c.Redirect(Error.Error, 500, "Error server")
+	}
+
+	if respService.Errno != 0 {
+		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
+	}
+
+	return c.Redirect(Users.Users)
 }

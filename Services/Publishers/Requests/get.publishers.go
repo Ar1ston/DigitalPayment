@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Publishers/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 )
 
@@ -29,8 +28,7 @@ type ResponseGetPublishers struct {
 func (request *RequestGetPublishers) Decode(decReq []byte) *error {
 	return nil
 }
-func (request *RequestGetPublishers) Validation() *error {
-
+func (request *RequestGetPublishers) Validation() []byte {
 	return nil
 }
 func (request *RequestGetPublishers) Execute() ([]byte, *error) {
@@ -55,13 +53,10 @@ func (request *RequestGetPublishers) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 }

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"Web/conf/NATS"
+	"Web/conf/crypt"
 	"fmt"
 	"github.com/revel/revel"
 )
@@ -26,18 +27,24 @@ func (c Registration) Registration(login string, password string, name string) r
 	if c.Request.Method == "POST" {
 		var reqService requestCreateUser
 		reqService.Login = login
-		reqService.Password = password
+
+		cryptPassword, err := crypt.Aes_encrypt(password)
+		if err != nil {
+			return c.Redirect(Error.Error, 500, "Error server")
+		}
+
+		reqService.Password = cryptPassword
 		reqService.Name = name
 		var respService responseCreateUser
 
-		err := NATS.RequestToNats("Users", "Web", "CreateUser", &reqService, &respService)
+		err = NATS.RequestToNats("Users", "Web", "CreateUser", &reqService, &respService)
 		if err != nil {
-			return c.Render()
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 
 		if respService.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-			return c.Render()
+			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
 		return c.Redirect(Login.Login)

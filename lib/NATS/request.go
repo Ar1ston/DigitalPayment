@@ -25,9 +25,7 @@ func (req *RequestNats) SendRequestToNats(nats *nats.Conn) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
-	//if rpl.To != req.From {
-	//	return nil, fmt.Errorf("ERROR RESPONS FROM NATS (%s)", req.To)
-	//}
+
 	return rpl.Msg, nil
 }
 func toBytes(message interface{}) []byte {

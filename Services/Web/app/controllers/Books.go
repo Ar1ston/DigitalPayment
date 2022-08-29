@@ -73,12 +73,12 @@ func (c Books) Books() revel.Result {
 	var respService respBooks
 	err := NATS.RequestToNats("Books", "Web", "GetBooks", []byte(""), &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	var bks []book
@@ -97,13 +97,12 @@ func (c Books) Book(id int) revel.Result {
 
 	err := NATS.RequestToNats("Books", "Web", "GetBook", &reqService, &respService)
 	if err != nil {
-		return c.Redirect(Login.Login)
-
+		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
 	if respService.Errno != 0 {
 		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Login.Login)
+		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
 	var name = respService.Name
@@ -128,11 +127,11 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 		var respServiceAuthor respAuthors
 		err := NATS.RequestToNats("Authors", "Web", "GetAuthors", []byte(""), &respServiceAuthor)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 		if respServiceAuthor.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceAuthor.Errno, respServiceAuthor.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respServiceAuthor.Errno), respServiceAuthor.Error)
 		}
 		var authors []BookAuthors
 		for _, v := range respServiceAuthor.Authors {
@@ -146,11 +145,11 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 		var respServiceUser respGetUsers
 		err = NATS.RequestToNats("Users", "Web", "GetUsers", []byte(""), &respServiceUser)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 		if respServiceUser.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceUser.Errno, respServiceUser.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respServiceUser.Errno), respServiceUser.Error)
 		}
 		var users []BookUsers
 		for _, v := range respServiceUser.Users {
@@ -164,11 +163,11 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 		var respServicePublisher respPublishers
 		err = NATS.RequestToNats("Publishers", "Web", "GetPublishers", []byte(""), &respServicePublisher)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 		if respServicePublisher.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respServicePublisher.Errno, respServicePublisher.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respServicePublisher.Errno), respServicePublisher.Error)
 		}
 		var publishers []BookPublishers
 		for _, v := range respServicePublisher.Publishers {
@@ -194,15 +193,15 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 
 		err := NATS.RequestToNats("Books", "Web", "CreateBook", &reqService, &respService)
 		if err != nil {
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, 500, "Error server")
 		}
 
 		if respService.Errno != 0 {
 			fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-			return c.Redirect(Login.Login)
+			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
-		return c.Redirect(Authors.Authors)
+		return c.Redirect(Books.Books)
 
 	}
 	return c.Render()

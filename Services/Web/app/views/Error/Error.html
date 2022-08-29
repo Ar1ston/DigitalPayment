@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-</head>
+<html>
+<title>Error</title>
 <body>
+
+<br>
   <b>ERROR</b>
   <br>
   <span>Code: {{ .Code}}</span>
   <span>Msg: {{ .Msg}}</span>
-</body>
-</html>
+{{template "footer.html" .}}

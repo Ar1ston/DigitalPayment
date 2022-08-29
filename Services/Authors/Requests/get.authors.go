@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 )
 
@@ -28,11 +27,9 @@ type ResponseGetAuthors struct {
 }
 
 func (request *RequestGetAuthors) Decode(decReq []byte) *error {
-
 	return nil
 }
-func (request *RequestGetAuthors) Validation() *error {
-
+func (request *RequestGetAuthors) Validation() []byte {
 	return nil
 }
 func (request *RequestGetAuthors) Execute() ([]byte, *error) {
@@ -58,13 +55,10 @@ func (request *RequestGetAuthors) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 }

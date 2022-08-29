@@ -109,9 +109,14 @@ type tError struct{}
 
 var Error tError
 
-func (_ tError) Error() string {
+func (_ tError) Error(
+	Code int,
+	Msg string,
+) string {
 	args := make(map[string]string)
 
+	revel.Unbind(args, "Code", Code)
+	revel.Unbind(args, "Msg", Msg)
 	return revel.MainRouter.Reverse("Error.Error", args).URL
 }
 
@@ -216,6 +221,26 @@ func (_ tUsers) User(
 
 	revel.Unbind(args, "id", id)
 	return revel.MainRouter.Reverse("Users.User", args).URL
+}
+
+func (_ tUsers) Remove(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Users.Remove", args).URL
+}
+
+func (_ tUsers) ChangeLevel(
+	id int,
+	level int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "level", level)
+	return revel.MainRouter.Reverse("Users.ChangeLevel", args).URL
 }
 
 type tStatic struct{}

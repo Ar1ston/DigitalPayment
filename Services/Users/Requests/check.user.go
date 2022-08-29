@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Users/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 	"gorm.io/gorm"
 )
@@ -29,28 +28,34 @@ type ResponseCheckUser struct {
 }
 
 func (request *RequestCheckUser) Decode(decReq []byte) *error {
-	var rplBytes = bytes.NewBuffer(decReq)
-	dec := gob.NewDecoder(rplBytes)
-	err := dec.Decode(request)
+	err := crypt.Gob_decrypt(decReq, request)
 	if err != nil {
 		return &err
 	}
 	return nil
 }
 
-func (request *RequestCheckUser) Validation() *error {
-	var err error
+func (request *RequestCheckUser) Validation() []byte {
+	isError := false
+	rpl := ResponseCheckUser{}
 	if request.Login == "" {
-		err = fmt.Errorf("%s", "Неверное поле Login в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestCheckUser: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation Login field in request"
+		fmt.Printf("ERROR VALIDATION: %s\n", rpl.Error)
 	}
 	if request.Password == "" {
-		err = fmt.Errorf("%s", "Неверное поле password в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestCheckUser: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation Password field in request"
+		fmt.Printf("ERROR VALIDATION: %s\n", rpl.Error)
 	}
-	return nil
+	if isError == false {
+		return nil
+	} else {
+		encrypt, _ := crypt.Gob_encrypt(&rpl)
+		return encrypt
+	}
 }
 
 func (request *RequestCheckUser) Execute() ([]byte, *error) {
@@ -70,7 +75,11 @@ func (request *RequestCheckUser) Execute() ([]byte, *error) {
 		rpl.Errno = 500
 	}
 	if err == nil {
-		if user.Password != request.Password {
+
+		decryptPasswordIn, _ := crypt.Aes_decrypt(user.Password)
+		decryptPasswordOut, _ := crypt.Aes_decrypt(request.Password)
+
+		if decryptPasswordIn != decryptPasswordOut {
 			rpl.Error = "Пароль неверный"
 			rpl.Errno = 401
 		} else {
@@ -84,14 +93,11 @@ func (request *RequestCheckUser) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 
 }

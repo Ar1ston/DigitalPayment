@@ -10,6 +10,9 @@ module:testrunner
 GET     /Login                                       Login.Login
 POST     /Login                                       Login.Login
 
+GET /Error Error.Error
+
+
 GET /Registration   Registration.Registration
 POST /Registration Registration.Registration
 
@@ -20,6 +23,8 @@ POST     /Book/Create                          Books.Create
 
 GET     /Users                                  Users.Users
 GET     /User                                   Users.User
+GET     /User/Remove                          Users.Remove
+GET     /User/ChangeLevel                          Users.ChangeLevel
 
 
 GET     /Author                                 Authors.Author

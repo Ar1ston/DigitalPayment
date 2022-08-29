@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 )
 
@@ -28,39 +27,47 @@ type ResponseChangeAuthor struct {
 }
 
 func (request *RequestChangeAuthor) Decode(decReq []byte) *error {
-
-	var rplBytes = bytes.NewBuffer(decReq)
-	dec := gob.NewDecoder(rplBytes)
-	err := dec.Decode(request)
+	err := crypt.Gob_decrypt(decReq, request)
 	if err != nil {
 		return &err
 	}
 	return nil
 }
 
-func (request *RequestChangeAuthor) Validation() *error {
-	var err error
+func (request *RequestChangeAuthor) Validation() []byte {
+	isError := false
+	rpl := ResponseChangeAuthor{}
 	if request.Id == 0 {
-		err = fmt.Errorf("%s", "Неверное поле ID в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation ID field in request"
+		fmt.Printf("ERROR VALIDATION ChangeAuthor: %s\n", rpl.Error)
 	}
 	if request.First_name == "" {
-		err = fmt.Errorf("%s", "Неверное поле First_name в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation First_name field in request"
+		fmt.Printf("ERROR VALIDATION ChangeAuthor: %s\n", rpl.Error)
 	}
 	if request.Last_name == "" {
-		err = fmt.Errorf("%s", "Неверное поле Last_name в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation Last_name field in request"
+		fmt.Printf("ERROR VALIDATION ChangeAuthor: %s\n", rpl.Error)
 	}
 	if request.Description == "" {
-		err = fmt.Errorf("%s", "Неверное поле Description в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestGetAuthor: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation Description field in request"
+		fmt.Printf("ERROR VALIDATION ChangeAuthor: %s\n", rpl.Error)
 	}
-	return nil
+	if isError == false {
+		return nil
+	} else {
+		encrypt, _ := crypt.Gob_encrypt(&rpl)
+		return encrypt
+
+	}
 }
 func (request *RequestChangeAuthor) Execute() ([]byte, *error) {
 	fmt.Printf("REQUEST: %+v\n", request)
@@ -90,13 +97,10 @@ func (request *RequestChangeAuthor) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 }

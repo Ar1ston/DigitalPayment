@@ -2,9 +2,8 @@ package Requests
 
 import (
 	"DigitalPayment/Services/Publishers/lib/db_local"
+	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/register_requests"
-	"bytes"
-	"encoding/gob"
 	"fmt"
 )
 
@@ -27,23 +26,27 @@ type ResponseChangePublisher struct {
 }
 
 func (request *RequestChangePublisher) Decode(decReq []byte) *error {
-
-	var rplBytes = bytes.NewBuffer(decReq)
-	dec := gob.NewDecoder(rplBytes)
-	err := dec.Decode(request)
+	err := crypt.Gob_decrypt(decReq, request)
 	if err != nil {
 		return &err
 	}
 	return nil
 }
-func (request *RequestChangePublisher) Validation() *error {
-	var err error
+func (request *RequestChangePublisher) Validation() []byte {
+	isError := false
+	rpl := ResponseChangePublisher{}
 	if request.Id == 0 {
-		err = fmt.Errorf("%s", "Неверное поле Id в запросе")
-		fmt.Printf("ОШИБКА ВАЛИДАЦИИ RequestChangePublisher: %s\n", err.Error())
-		return &err
+		isError = true
+		rpl.Errno = 409
+		rpl.Error = "Error validation ID field in request"
+		fmt.Printf("ERROR VALIDATION ChangePublisher: %s\n", rpl.Error)
 	}
-	return nil
+	if isError == false {
+		return nil
+	} else {
+		encrypt, _ := crypt.Gob_encrypt(&rpl)
+		return encrypt
+	}
 }
 func (request *RequestChangePublisher) Execute() ([]byte, *error) {
 	fmt.Printf("REQUEST: %+v\n", request)
@@ -70,13 +73,10 @@ func (request *RequestChangePublisher) Execute() ([]byte, *error) {
 	}
 	fmt.Printf("RESPONSE: %+v\n", rpl)
 
-	var rplBytes bytes.Buffer
-	enc := gob.NewEncoder(&rplBytes)
-
-	err = enc.Encode(rpl)
+	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
 		return nil, &err
 	}
 
-	return rplBytes.Bytes(), nil
+	return rplBytes, nil
 }
