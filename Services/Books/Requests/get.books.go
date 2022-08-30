@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "GetBooks"
 	register_requests.Register(method, (*RequestGetBooks)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestGetBooks struct{}
@@ -34,7 +34,7 @@ func (request *RequestGetBooks) Validation() []byte {
 	return nil
 }
 func (request *RequestGetBooks) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseGetBooks{}
 
@@ -54,7 +54,7 @@ func (request *RequestGetBooks) Execute() ([]byte, *error) {
 		}
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {

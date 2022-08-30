@@ -1,9 +1,9 @@
 package crypt
 
 import (
+	"DigitalPayment/lib/logs"
 	"bytes"
 	"encoding/gob"
-	"fmt"
 )
 
 func Gob_encrypt(req interface{}) ([]byte, error) {
@@ -21,7 +21,7 @@ func Gob_decrypt(in []byte, resp interface{}) error {
 	dec := gob.NewDecoder(buff)
 	err := dec.Decode(resp)
 	if err != nil {
-		fmt.Printf("%s\n", "Decoding failed")
+		logs.Logger.Error("Decoding failed")
 		return err
 	}
 	return nil

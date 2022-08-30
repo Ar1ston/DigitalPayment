@@ -2,8 +2,8 @@ package NATS
 
 import (
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 	"github.com/nats-io/nats.go"
 	"os"
 	"os/signal"
@@ -20,34 +20,34 @@ func RunWorker(nats_local *nats.Conn, service_name string) {
 		syscall.SIGQUIT)
 	conn, err := nats_local.QueueSubscribe(service_name, service_name, func(m *nats.Msg) {
 		go func() {
-			fmt.Println("Incoming request received")
+			logs.Logger.Info("Incoming request received")
 			in_struct := RequestNats{}
 			out_struct := RequestNats{}
 
 			//декодирование входящего сообщения
 			err := crypt.Gob_decrypt(m.Data, &in_struct)
 			if err != nil {
-				fmt.Printf("ERROR DECRYPT REQUEST: %s\n", err.Error())
+				logs.Logger.Errorf("ERROR DECRYPT REQUEST: %s", err.Error())
 				return
 			}
-			fmt.Printf("REQUEST FROM: %s TO: %s ReqName: %s\n", in_struct.From, in_struct.To, in_struct.RequestName)
+			logs.Logger.Infof("REQUEST FROM: %s TO: %s ReqName: %s", in_struct.From, in_struct.To, in_struct.RequestName)
 
 			//поиск нужной структуры
 			findStruct, err := register_requests.FindStruct(in_struct.RequestName)
 			if err != nil {
-				fmt.Printf("ERROR FIND ReqName: %s\n", err)
+				logs.Logger.Errorf("ERROR FIND ReqName: %s", err)
 				return
 			}
 
 			//Бизнес логика
-			fmt.Printf("%s\n", "Start Business logic")
+			logs.Logger.Info("Start Business logic")
 			var rpl []byte
 			findStruct.Decode(in_struct.Msg)
 			rpl = findStruct.Validation()
 			if rpl == nil {
 				rpl, _ = findStruct.Execute()
 			}
-			fmt.Printf("%s\n", "End Business logic")
+			logs.Logger.Info("End Business logic")
 
 			//заполнение ответа
 			out_struct.To = in_struct.From
@@ -58,14 +58,14 @@ func RunWorker(nats_local *nats.Conn, service_name string) {
 			// Кодирование ответа
 			resp_byte, err := crypt.Gob_encrypt(&out_struct)
 			if err != nil {
-				fmt.Printf("ERROR ENCRYPT: %s\n", err.Error())
+				logs.Logger.Errorf("ERROR ENCRYPT: %s", err.Error())
 				return
 			}
 
 			//отправка ответа
 			err = nats_local.Publish(m.Reply, resp_byte)
 			if err != nil {
-				fmt.Printf("ERROR SEND RESPONSE: %s\n", err.Error())
+				logs.Logger.Errorf("ERROR SEND RESPONSE: %s\n", err.Error())
 				return
 			}
 		}()
@@ -76,13 +76,13 @@ func RunWorker(nats_local *nats.Conn, service_name string) {
 		nats_local.Close()
 	}()
 	if err != nil {
-		fmt.Printf("Worker is not running\n")
+		logs.Logger.Error("Worker is not running")
 		return
 	}
 
-	fmt.Printf("Worker %s is running\n", service_name)
+	logs.Logger.Infof("Worker %s is running", service_name)
 
 	<-signal_chan
 
-	fmt.Printf("Exeting...\n")
+	logs.Logger.Info("Exeting...")
 }

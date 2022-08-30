@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "CreateAuthor"
 	register_requests.Register(method, (*RequestCreateAuthor)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestCreateAuthor struct {
@@ -38,24 +38,23 @@ func (request *RequestCreateAuthor) Validation() []byte {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation FirstName field in request"
-		fmt.Printf("ERROR VALIDATION RequestGetAuthor: %s\n", rpl.Error)
 	}
 	if request.Last_name == "" {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation LastName field in request"
-		fmt.Printf("ERROR VALIDATION RequestGetAuthor: %s\n", rpl.Error)
 	}
 	if isError == false {
 		return nil
 	} else {
+		logs.Logger.Errorf("ERROR VALIDATION CreateAuthor: %s", rpl.Error)
 		encrypt, _ := crypt.Gob_encrypt(&rpl)
 		return encrypt
 
 	}
 }
 func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseCreateAuthor{}
 
@@ -68,7 +67,7 @@ func (request *RequestCreateAuthor) Execute() ([]byte, *error) {
 		rpl.Id = uint64(author.Id)
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {

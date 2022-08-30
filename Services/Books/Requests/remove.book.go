@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Books/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "RemoveBook"
 	register_requests.Register(method, (*RequestRemoveBook)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestRemoveBook struct {
@@ -35,17 +35,17 @@ func (request *RequestRemoveBook) Validation() []byte {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation ID field in request"
-		fmt.Printf("ERROR VALIDATION RemoveBook: %s\n", rpl.Error)
 	}
 	if isError == false {
 		return nil
 	} else {
+		logs.Logger.Errorf("ERROR VALIDATION RemoveBook: %s", rpl.Error)
 		encrypt, _ := crypt.Gob_encrypt(&rpl)
 		return encrypt
 	}
 }
 func (request *RequestRemoveBook) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseRemoveBook{}
 
@@ -59,7 +59,8 @@ func (request *RequestRemoveBook) Execute() ([]byte, *error) {
 	} else {
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {

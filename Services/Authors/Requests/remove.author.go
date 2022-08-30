@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Authors/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "RemoveAuthor"
 	register_requests.Register(method, (*RequestRemoveAuthor)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestRemoveAuthor struct {
@@ -35,17 +35,17 @@ func (request *RequestRemoveAuthor) Validation() []byte {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation ID field in request"
-		fmt.Printf("ERROR VALIDATION RemoveAuthor: %s\n", rpl.Error)
 	}
 	if isError == false {
 		return nil
 	} else {
+		logs.Logger.Errorf("ERROR VALIDATION RemoveAuthor: %s", rpl.Error)
 		encrypt, _ := crypt.Gob_encrypt(&rpl)
 		return encrypt
 	}
 }
 func (request *RequestRemoveAuthor) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseRemoveAuthor{}
 
@@ -59,7 +59,7 @@ func (request *RequestRemoveAuthor) Execute() ([]byte, *error) {
 	} else {
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
