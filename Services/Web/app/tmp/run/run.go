@@ -74,7 +74,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					168: []string{
+					172: []string{
 						"id",
 						"firstName",
 						"lastName",
@@ -90,7 +90,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					198: []string{},
+					205: []string{},
 				},
 			},
 		})
@@ -137,12 +137,12 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					180: []string{
+					184: []string{
 						"publishers",
 						"users",
 						"authors",
 					},
-					207: []string{},
+					211: []string{},
 				},
 			},
 		})
@@ -173,9 +173,9 @@ func Register() {
 					&revel.MethodArg{Name: "password", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					40: []string{},
-					45: []string{},
-					59: []string{},
+					41: []string{},
+					46: []string{},
+					60: []string{},
 				},
 			},
 		})
@@ -219,7 +219,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					153: []string{
+					161: []string{
 						"id",
 						"name",
 						"desc",
@@ -233,7 +233,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					179: []string{},
+					191: []string{},
 				},
 			},
 		})
@@ -259,7 +259,7 @@ func Register() {
 				Name: "Users",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					72: []string{
+					76: []string{
 						"usrs",
 					},
 				},
@@ -270,7 +270,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					96: []string{
+					104: []string{
 						"id",
 						"Name",
 						"Login",

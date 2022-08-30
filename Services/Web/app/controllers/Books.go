@@ -121,6 +121,10 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 		return c.Redirect(Login.Login)
 	}
 
+	if c.Session["level"] == "1" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	if c.Request.Method == "GET" {
 
 		//Запрашиваем авторов

@@ -92,6 +92,10 @@ func (c Publishers) Remove(id int) revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	var reqService requestRemovePublisher
 	reqService.Id = uint64(id)
 
@@ -113,6 +117,10 @@ func (c Publishers) Change(id int, Name string, Description string) revel.Result
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	if c.Request.Method == "POST" {
 
 		var reqService requestChangePublisher
@@ -157,6 +165,10 @@ func (c Publishers) Create(Name string, Description string) revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] == "1" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	if c.Request.Method == "POST" {
 
 		var reqService requestCreatePublisher

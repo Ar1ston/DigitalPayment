@@ -5,6 +5,7 @@ import (
 	"Web/conf/crypt"
 	"fmt"
 	"github.com/revel/revel"
+	"strconv"
 )
 
 type Login struct {
@@ -47,7 +48,7 @@ func (c Login) Login(login string, password string) revel.Result {
 
 		c.Session["login"] = respService.Login
 		c.Session["name"] = respService.Name
-		c.Session["level"] = respService.Level
+		c.Session["level"] = strconv.FormatUint(respService.Level, 10)
 		c.Session["id"] = respService.Id
 
 		return c.Redirect(Books.Books)

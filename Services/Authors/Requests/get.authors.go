@@ -33,7 +33,7 @@ func (request *RequestGetAuthors) Validation() []byte {
 	return nil
 }
 func (request *RequestGetAuthors) Execute() ([]byte, *error) {
-	logs.Logger.Infof("REQUEST: %+v", request)
+	logs.Logger.Printf("REQUEST: %+v", request)
 
 	rpl := ResponseGetAuthors{}
 

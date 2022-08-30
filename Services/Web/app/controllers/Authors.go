@@ -101,7 +101,9 @@ func (c Authors) Remove(id int) revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
-
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
 	var reqService requestRemoveAuthor
 	reqService.Id = uint64(id)
 
@@ -124,7 +126,9 @@ func (c Authors) Change(id int, FirstName string, LastName string, Description s
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
-
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
 	if c.Request.Method == "POST" {
 
 		var reqService requestChangeAuthor
@@ -172,6 +176,9 @@ func (c Authors) Create(FirstName string, LastName string, Description string) r
 
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
+	}
+	if c.Session["level"] == "1" {
+		return c.Redirect(Error.Error, 409, "No access")
 	}
 
 	if c.Request.Method == "POST" {

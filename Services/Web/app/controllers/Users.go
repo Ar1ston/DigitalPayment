@@ -54,6 +54,10 @@ func (c Users) Users() revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	var respService respGetUsers
 
 	err := NATS.RequestToNats("Users", "Web", "GetUsers", []byte(""), &respService)
@@ -75,6 +79,10 @@ func (c Users) User(id int) revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
+
 	var reqService requestGetUser
 	reqService.Id = uint64(id)
 	var respService respGetUser
@@ -100,6 +108,9 @@ func (c Users) Remove(id int) revel.Result {
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
 	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
+	}
 
 	var reqService requestRemoveUser
 	reqService.Id = uint64(id)
@@ -122,6 +133,9 @@ func (c Users) ChangeLevel(id int, level int) revel.Result {
 
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
+	}
+	if c.Session["level"] != "3" {
+		return c.Redirect(Error.Error, 409, "No access")
 	}
 
 	var reqService requestChangeLevelUser
