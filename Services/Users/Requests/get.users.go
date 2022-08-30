@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Users/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "GetUsers"
 	register_requests.Register(method, (*RequestGetUsers)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestGetUsers struct{}
@@ -33,7 +33,7 @@ func (request *RequestGetUsers) Validation() []byte {
 	return nil
 }
 func (request *RequestGetUsers) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseGetUsers{}
 
@@ -52,7 +52,7 @@ func (request *RequestGetUsers) Execute() ([]byte, *error) {
 		}
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {

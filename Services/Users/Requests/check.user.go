@@ -3,15 +3,15 @@ package Requests
 import (
 	"DigitalPayment/Services/Users/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 	"gorm.io/gorm"
 )
 
 func init() {
 	method := "CheckUser"
 	register_requests.Register(method, (*RequestCheckUser)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestCheckUser struct {
@@ -42,24 +42,23 @@ func (request *RequestCheckUser) Validation() []byte {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation Login field in request"
-		fmt.Printf("ERROR VALIDATION: %s\n", rpl.Error)
 	}
 	if request.Password == "" {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation Password field in request"
-		fmt.Printf("ERROR VALIDATION: %s\n", rpl.Error)
 	}
 	if isError == false {
 		return nil
 	} else {
+		logs.Logger.Errorf("ERROR VALIDATION CheckUser: %s", rpl.Error)
 		encrypt, _ := crypt.Gob_encrypt(&rpl)
 		return encrypt
 	}
 }
 
 func (request *RequestCheckUser) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseCheckUser{}
 
@@ -91,7 +90,7 @@ func (request *RequestCheckUser) Execute() ([]byte, *error) {
 		}
 
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {

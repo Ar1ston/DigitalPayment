@@ -3,10 +3,11 @@ package main
 import (
 	"DigitalPayment/Services/Publishers/Requests"
 	"DigitalPayment/lib/NATS"
-	"fmt"
+	"DigitalPayment/lib/logs"
 )
 
 func main() {
+	serviceName := "Publishers"
 
 	conn := NATS.ConnectNATS{
 		Host: "localhost",
@@ -14,9 +15,9 @@ func main() {
 	}
 	nats, err := conn.ConnectToNATS()
 	if err != nil {
-		fmt.Printf("Ошибка подключения к NATS: %s", err)
+		logs.Logger.Errorf("Ошибка подключения к NATS: %s", err)
 		return
 	}
 	Requests.Hello()
-	NATS.RunWorker(nats, "Publishers")
+	NATS.RunWorker(nats, serviceName)
 }

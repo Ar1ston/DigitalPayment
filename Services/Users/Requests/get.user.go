@@ -3,14 +3,14 @@ package Requests
 import (
 	"DigitalPayment/Services/Users/lib/db_local"
 	"DigitalPayment/lib/crypt"
+	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
-	"fmt"
 )
 
 func init() {
 	method := "GetUser"
 	register_requests.Register(method, (*RequestGetUser)(nil))
-	fmt.Printf("Метод %s инициализирован!\n", method)
+	logs.Logger.Infof("Метод %s инициализирован!", method)
 }
 
 type RequestGetUser struct {
@@ -39,17 +39,17 @@ func (request *RequestGetUser) Validation() []byte {
 		isError = true
 		rpl.Errno = 409
 		rpl.Error = "Error validation Id field in request"
-		fmt.Printf("ERROR VALIDATION: %s\n", rpl.Error)
 	}
 	if isError == false {
 		return nil
 	} else {
+		logs.Logger.Errorf("ERROR VALIDATION GetUser: %s", rpl.Error)
 		encrypt, _ := crypt.Gob_encrypt(&rpl)
 		return encrypt
 	}
 }
 func (request *RequestGetUser) Execute() ([]byte, *error) {
-	fmt.Printf("REQUEST: %+v\n", request)
+	logs.Logger.Infof("REQUEST: %+v", request)
 
 	rpl := ResponseGetUser{}
 
@@ -67,7 +67,7 @@ func (request *RequestGetUser) Execute() ([]byte, *error) {
 		rpl.Level = uint64(user.Level)
 		rpl.Errno = 0
 	}
-	fmt.Printf("RESPONSE: %+v\n", rpl)
+	logs.Logger.Infof("RESPONSE: %+v", rpl)
 
 	rplBytes, err := crypt.Gob_encrypt(&rpl)
 	if err != nil {
