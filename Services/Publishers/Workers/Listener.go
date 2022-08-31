@@ -9,6 +9,7 @@ import (
 func main() {
 	serviceName := "Publishers"
 
+	logs.Logger.SetService(serviceName)
 	conn := NATS.ConnectNATS{
 		Host: "localhost",
 		Port: "4222",

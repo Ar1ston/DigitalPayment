@@ -105,6 +105,40 @@ func (_ tBooks) Create(
 	return revel.MainRouter.Reverse("Books.Create", args).URL
 }
 
+func (_ tBooks) Remove(
+	id int,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	return revel.MainRouter.Reverse("Books.Remove", args).URL
+}
+
+func (_ tBooks) Change(
+	id int,
+	publishers interface{},
+	users interface{},
+	authors interface{},
+	Name string,
+	Genre string,
+	author int,
+	publisher int,
+	Description string,
+) string {
+	args := make(map[string]string)
+
+	revel.Unbind(args, "id", id)
+	revel.Unbind(args, "publishers", publishers)
+	revel.Unbind(args, "users", users)
+	revel.Unbind(args, "authors", authors)
+	revel.Unbind(args, "Name", Name)
+	revel.Unbind(args, "Genre", Genre)
+	revel.Unbind(args, "author", author)
+	revel.Unbind(args, "publisher", publisher)
+	revel.Unbind(args, "Description", Description)
+	return revel.MainRouter.Reverse("Books.Change", args).URL
+}
+
 type tError struct{}
 
 var Error tError

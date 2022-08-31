@@ -148,7 +148,7 @@ func (c Authors) Change(id int, FirstName string, LastName string, Description s
 			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
-		return c.Redirect(Authors.Authors)
+		return c.Redirect("/Author?id=%d", id)
 	} else {
 
 		var reqService requestGetAuthor

@@ -101,7 +101,7 @@ func Register() {
 				Name: "Books",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					86: []string{
+					106: []string{
 						"bks",
 					},
 				},
@@ -112,7 +112,8 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					116: []string{
+					136: []string{
+						"id",
 						"name",
 						"genre",
 						"author",
@@ -137,12 +138,45 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					184: []string{
+					204: []string{
 						"publishers",
 						"users",
 						"authors",
 					},
-					211: []string{},
+					231: []string{},
+				},
+			},
+			&revel.MethodType{
+				Name: "Remove",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+				},
+				RenderArgNames: map[int][]string{},
+			},
+			&revel.MethodType{
+				Name: "Change",
+				Args: []*revel.MethodArg{
+					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
+					&revel.MethodArg{Name: "publishers", Type: reflect.TypeOf((*[]controllers.BookPublishers)(nil))},
+					&revel.MethodArg{Name: "users", Type: reflect.TypeOf((*[]controllers.BookUsers)(nil))},
+					&revel.MethodArg{Name: "authors", Type: reflect.TypeOf((*[]controllers.BookAuthors)(nil))},
+					&revel.MethodArg{Name: "Name", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "Genre", Type: reflect.TypeOf((*string)(nil))},
+					&revel.MethodArg{Name: "author", Type: reflect.TypeOf((*int)(nil))},
+					&revel.MethodArg{Name: "publisher", Type: reflect.TypeOf((*int)(nil))},
+					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
+				},
+				RenderArgNames: map[int][]string{
+					348: []string{
+						"id",
+						"name",
+						"genre",
+						"authors",
+						"Selected_author",
+						"selected_publisher",
+						"publishers",
+						"description",
+					},
 				},
 			},
 		})

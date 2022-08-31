@@ -20,6 +20,10 @@ GET     /Book                                   Books.Book
 GET     /Books                                  Books.Books
 GET     /Book/Create                          Books.Create
 POST     /Book/Create                          Books.Create
+GET     /Book/Change                          Books.Change
+POST     /Book/Change                          Books.Change
+GET     /Book/Remove                          Books.Remove
+
 
 GET     /Users                                  Users.Users
 GET     /User                                   Users.User

@@ -153,5 +153,5 @@ func (c Users) ChangeLevel(id int, level int) revel.Result {
 		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 	}
 
-	return c.Redirect(Users.Users)
+	return c.Redirect("/User?id=%d", id)
 }

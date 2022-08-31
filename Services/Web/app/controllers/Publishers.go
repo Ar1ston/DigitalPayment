@@ -139,7 +139,7 @@ func (c Publishers) Change(id int, Name string, Description string) revel.Result
 			return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
 		}
 
-		return c.Redirect(Publishers.Publishers)
+		return c.Redirect("/Publisher?id=%d", id)
 	} else {
 
 		var reqService requestGetPublisher
