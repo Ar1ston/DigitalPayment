@@ -12,6 +12,7 @@ require (
 	github.com/revel/revel v1.1.0 // indirect
 	golang.org/x/crypto v0.0.0-20220622213112-05595931fe9d // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
+	gopkg.in/ini.v1 v1.67.0
 	gorm.io/driver/postgres v1.3.8
 	gorm.io/gorm v1.23.8
 )

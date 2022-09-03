@@ -1,6 +1,7 @@
 package crypt
 
 import (
+	"DigitalPayment/lib/parameters"
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
@@ -9,7 +10,7 @@ import (
 	"io"
 )
 
-var password = []byte("asuperstrong32bitpasswordgohere!")
+var password = []byte(parameters.ParamsService.PasswordAES)
 
 func Aes_encrypt(message string) (encoded string, err error) {
 	plainText := []byte(message)

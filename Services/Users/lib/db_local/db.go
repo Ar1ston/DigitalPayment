@@ -2,6 +2,7 @@ package db_local
 
 import (
 	"DigitalPayment/lib/DB"
+	"DigitalPayment/lib/parameters"
 	"fmt"
 	"gorm.io/gorm"
 )
@@ -11,18 +12,20 @@ var (
 	err      error
 )
 
-func init() {
+func InitDB() error {
 	dns := DB.ConnectDatabase{
-		Host:     "localhost",
-		Port:     "5432",
-		User:     "postgres",
-		Password: "388336",
-		DBName:   "users",
+		Host:     parameters.ParamsService.DBHost,
+		Port:     parameters.ParamsService.DBPort,
+		User:     parameters.ParamsService.DBUser,
+		Password: parameters.ParamsService.DBPassword,
+		DBName:   parameters.ParamsService.DBName,
 	}
 	DB_LOCAL, err = dns.ConnectToDatabase()
 	if err != nil {
 		fmt.Printf("ERROR CONNECT TO DATABASE: %s\n", err.Error())
+		return err
 	}
+	return nil
 }
 
 const (
