@@ -101,7 +101,7 @@ func Register() {
 				Name: "Books",
 				Args: []*revel.MethodArg{},
 				RenderArgNames: map[int][]string{
-					106: []string{
+					107: []string{
 						"bks",
 					},
 				},
@@ -112,7 +112,7 @@ func Register() {
 					&revel.MethodArg{Name: "id", Type: reflect.TypeOf((*int)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					136: []string{
+					195: []string{
 						"id",
 						"name",
 						"genre",
@@ -121,6 +121,9 @@ func Register() {
 						"added_User",
 						"added_Time",
 						"description",
+						"id_author",
+						"id_publisher",
+						"user_id",
 					},
 				},
 			},
@@ -134,16 +137,15 @@ func Register() {
 					&revel.MethodArg{Name: "Genre", Type: reflect.TypeOf((*string)(nil))},
 					&revel.MethodArg{Name: "author", Type: reflect.TypeOf((*int)(nil))},
 					&revel.MethodArg{Name: "publisher", Type: reflect.TypeOf((*int)(nil))},
-					&revel.MethodArg{Name: "user", Type: reflect.TypeOf((*int)(nil))},
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					204: []string{
+					263: []string{
 						"publishers",
 						"users",
 						"authors",
 					},
-					231: []string{},
+					291: []string{},
 				},
 			},
 			&revel.MethodType{
@@ -167,7 +169,7 @@ func Register() {
 					&revel.MethodArg{Name: "Description", Type: reflect.TypeOf((*string)(nil))},
 				},
 				RenderArgNames: map[int][]string{
-					348: []string{
+					408: []string{
 						"id",
 						"name",
 						"genre",

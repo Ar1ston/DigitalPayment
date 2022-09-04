@@ -9,11 +9,11 @@
         <div>
             <b>{{ .Genre}}</b>
             <br>
-            <a href="/Book?id={{ .Id}}">{{ .Author}} "{{ .Name}}"</a>
+            <a href="/Book?id={{ .Id}}">"{{ .Name}}"</a>
         </div>
     </li>
     {{else}}
-    <li><b>no rows</b></li>
+    <li><b>no books</b></li>
     {{end}}
 
 </ul>

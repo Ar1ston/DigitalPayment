@@ -5,6 +5,7 @@ import (
 	"DigitalPayment/lib/crypt"
 	"DigitalPayment/lib/logs"
 	"DigitalPayment/lib/register_requests"
+	"gorm.io/gorm"
 	"time"
 )
 
@@ -63,8 +64,13 @@ func (request *RequestGetBook) Execute() ([]byte, *error) {
 	})
 
 	if err != nil {
-		rpl.Error = err.Error()
-		rpl.Errno = 500
+		if err == gorm.ErrRecordNotFound {
+			rpl.Error = err.Error()
+			rpl.Errno = 404
+		} else {
+			rpl.Error = err.Error()
+			rpl.Errno = 500
+		}
 	} else {
 		rpl.Id = uint64(book.Id)
 		rpl.Name = book.Name

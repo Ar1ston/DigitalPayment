@@ -88,7 +88,6 @@ func (_ tBooks) Create(
 	Genre string,
 	author int,
 	publisher int,
-	user int,
 	Description string,
 ) string {
 	args := make(map[string]string)
@@ -100,7 +99,6 @@ func (_ tBooks) Create(
 	revel.Unbind(args, "Genre", Genre)
 	revel.Unbind(args, "author", author)
 	revel.Unbind(args, "publisher", publisher)
-	revel.Unbind(args, "user", user)
 	revel.Unbind(args, "Description", Description)
 	return revel.MainRouter.Reverse("Books.Create", args).URL
 }

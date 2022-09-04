@@ -4,6 +4,7 @@ import (
 	"Web/conf/NATS"
 	"fmt"
 	"github.com/revel/revel"
+	"strconv"
 	"time"
 )
 
@@ -111,31 +112,89 @@ func (c Books) Book(id int) revel.Result {
 		return c.Redirect(Login.Login)
 	}
 
-	var reqService requestGetBook
-	reqService.Id = uint64(id)
-	var respService respGetBook
+	var reqServiceBook requestGetBook
+	reqServiceBook.Id = uint64(id)
+	var respServiceBook respGetBook
 
-	err := NATS.RequestToNats("Books", "Web", "GetBook", &reqService, &respService)
+	err := NATS.RequestToNats("Books", "Web", "GetBook", &reqServiceBook, &respServiceBook)
 	if err != nil {
 		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
-	if respService.Errno != 0 {
-		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
+	if respServiceBook.Errno != 0 {
+		fmt.Printf("ERROR SERVICE(code %d): %s", respServiceBook.Errno, respServiceBook.Error)
+		return c.Redirect(Error.Error, int(respServiceBook.Errno), respServiceBook.Error)
 	}
 
-	var name = respService.Name
-	var genre = respService.Genre
-	var author = respService.Author
-	var publisher = respService.Publisher
-	var added_User = respService.Added_User
-	var added_Time = respService.Added_Time.Format("02.01.2006")
-	var description = respService.Description
+	var reqServiceAuthor requestGetAuthor
+	reqServiceAuthor.Id = respServiceBook.Author
+	var respServiceAuthor respAuthor
 
-	return c.Render(id, name, genre, author, publisher, added_User, added_Time, description)
+	err = NATS.RequestToNats("Authors", "Web", "GetAuthor", &reqServiceAuthor, &respServiceAuthor)
+	if err != nil {
+		return c.Redirect(Error.Error, 500, "Error server")
+	}
+
+	if respServiceAuthor.Errno == 404 {
+		respServiceAuthor.FirstName = "Неизвестно"
+		respServiceAuthor.LastName = ""
+	} else {
+		if respServiceAuthor.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceAuthor.Errno, respServiceAuthor.Error)
+			return c.Redirect(Error.Error, int(respServiceAuthor.Errno), respServiceAuthor.Error)
+		}
+	}
+
+	var reqServicePublisher requestGetPublisher
+	reqServicePublisher.Id = respServiceBook.Publisher
+	var respServicePublisher respPublisher
+
+	err = NATS.RequestToNats("Publishers", "Web", "GetPublisher", &reqServicePublisher, &respServicePublisher)
+	if err != nil {
+		return c.Redirect(Error.Error, 500, "Error server")
+	}
+
+	if respServicePublisher.Errno == 404 {
+		respServicePublisher.Name = "Неизвестно"
+	} else {
+		if respServicePublisher.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServicePublisher.Errno, respServicePublisher.Error)
+			return c.Redirect(Error.Error, int(respServicePublisher.Errno), respServicePublisher.Error)
+		}
+	}
+
+	var reqServiceUser requestGetUser
+	reqServiceUser.Id = respServiceBook.Added_User
+	var respServiceUser respGetUser
+
+	err = NATS.RequestToNats("Users", "Web", "GetUser", &reqServiceUser, &respServiceUser)
+	if err != nil {
+		return c.Redirect(Error.Error, 500, "Error server")
+	}
+
+	if respServiceUser.Errno == 404 {
+		respServiceUser.Login = "Неизвестно"
+	} else {
+		if respServiceUser.Errno != 0 {
+			fmt.Printf("ERROR SERVICE(code %d): %s", respServiceUser.Errno, respServiceUser.Error)
+			return c.Redirect(Error.Error, int(respServiceUser.Errno), respServiceUser.Error)
+		}
+	}
+
+	var name = respServiceBook.Name
+	var genre = respServiceBook.Genre
+	var id_author = respServiceBook.Author
+	var id_publisher = respServiceBook.Publisher
+	var author = respServiceAuthor.FirstName + " " + respServiceAuthor.LastName
+	var publisher = respServicePublisher.Name
+	var added_User = respServiceUser.Login
+	var added_Time = respServiceBook.Added_Time.Format("02.01.2006")
+	var description = respServiceBook.Description
+	var user_id = respServiceBook.Added_User
+
+	return c.Render(id, name, genre, author, publisher, added_User, added_Time, description, id_author, id_publisher, user_id)
 }
-func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors, Name string, Genre string, author int, publisher int, user int, Description string) revel.Result {
+func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []BookAuthors, Name string, Genre string, author int, publisher int, Description string) revel.Result {
 
 	if c.Session["login"] == nil {
 		return c.Redirect(Login.Login)
@@ -204,14 +263,15 @@ func (c Books) Create(publishers []BookPublishers, users []BookUsers, authors []
 		c.Render(publishers, users, authors)
 	}
 	if c.Request.Method == "POST" {
-		fmt.Printf("Name: %s, Genre: %s, Author: %d, Publisher: %d, User: %d, Desc:%s\n", Name, Genre, author, publisher, user, Description)
+		fmt.Printf("Name: %s, Genre: %s, Author: %d, Publisher: %d, User: %d, Desc:%s\n", Name, Genre, author, publisher, Description)
 
 		var reqService requestCreateBook
 		reqService.Name = Name
 		reqService.Genre = Genre
 		reqService.Author = uint64(author)
 		reqService.Publisher = uint64(publisher)
-		reqService.Added_User = uint64(user)
+		id, _ := strconv.Atoi(c.Session["id"].(string))
+		reqService.Added_User = uint64(id)
 		reqService.Description = Description
 		var respService respCreateBook
 

@@ -49,7 +49,7 @@ func (c Login) Login(login string, password string) revel.Result {
 		c.Session["login"] = respService.Login
 		c.Session["name"] = respService.Name
 		c.Session["level"] = strconv.FormatUint(respService.Level, 10)
-		c.Session["id"] = respService.Id
+		c.Session["id"] = strconv.FormatUint(respService.Id, 10)
 
 		return c.Redirect(Books.Books)
 	}

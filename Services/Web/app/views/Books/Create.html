@@ -29,16 +29,7 @@
         </select>
     </label>
     <br>
-
-    <label> Added user
-        <select name="user" required="required">
-            <option value=0>Неизвестен</option>
-            {{range .users}}
-            <option value={{ .Id}}>{{ .Login}}</option>
-            {{end}}
-        </select>
-    </label>
-    <br>
+    
     <label for="Description">Description</label><input type="text" id="Description" name="Description" placeholder="Description" value="">
     <br>
     <button type="submit">Add</button>
