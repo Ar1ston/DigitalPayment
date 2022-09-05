@@ -3,7 +3,7 @@ package db_local
 import "time"
 
 type Book struct {
-	Id          int64     `gorm:"primary key `
+	Id          int64     `gorm:"primary key"`
 	Name        string    `gorm:"column:Name"`
 	Genre       string    `gorm:"column:Genre"`
 	Author      int64     `gorm:"column:Author"`

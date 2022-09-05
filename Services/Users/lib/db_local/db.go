@@ -61,7 +61,7 @@ func CreateUser(db *gorm.DB, user *User) (*User, error) {
 
 	//проверка, что такой пользователь уже есть
 	tx, err := FindUsers(db, map[string]interface{}{
-		"login": user.Login,
+		"Login": user.Login,
 	})
 
 	if err == nil && tx != nil {

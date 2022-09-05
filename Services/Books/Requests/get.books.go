@@ -38,7 +38,7 @@ func (request *RequestGetBooks) Execute() ([]byte, *error) {
 
 	rpl := ResponseGetBooks{}
 
-	books, err := db_local.FindBooks(db_local.DB_LOCAL, map[string]interface{}{})
+	books, err := db_local.FindBooks(db_local.DB_LOCAL, nil)
 
 	if err != nil {
 		rpl.Error = err.Error()

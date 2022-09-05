@@ -63,7 +63,7 @@ func (request *RequestCheckUser) Execute() ([]byte, *error) {
 	rpl := ResponseCheckUser{}
 
 	user, err := db_local.FindUser(db_local.DB_LOCAL, map[string]interface{}{
-		"login": request.Login,
+		"Login": request.Login,
 	})
 	if err == gorm.ErrRecordNotFound {
 		rpl.Error = err.Error()
