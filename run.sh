@@ -10,25 +10,25 @@ echo 'Ждем 5 сек'
 sleep 5
 
 echo 'Создаем базы данных'
-#sudo su - postgres <<EOF
-#    psql -U postgres -h $IP -p 5432
-#    DROP DATABASE authors;
-#    drop database books;
-#    drop database publishers;
-#    drop database users;
-#
-#    create database authors;
-#    create database books;
-#    create database publishers;
-#    create database users;
-#    \q
-#    exit
-#EOF
-#echo 'Создание таблиц и заполнение данными'
-#psql -h $IP -p 5432 --username=postgres authors < $DIRECTORY/pg_dump/authors.sql || exit
-#psql -h $IP -p 5432 --username=postgres books < $DIRECTORY/pg_dump/books.sql || exit
-#psql -h $IP -p 5432 --username=postgres publishers < $DIRECTORY/pg_dump/publishers.sql || exit
-#psql -h $IP -p 5432 --username=postgres users < $DIRECTORY/pg_dump/users.sql || exit
+sudo su - postgres <<EOF
+    psql -U postgres -h $IP -p 5432
+    DROP DATABASE authors;
+    drop database books;
+    drop database publishers;
+    drop database users;
+
+    create database authors;
+    create database books;
+    create database publishers;
+    create database users;
+    \q
+    exit
+EOF
+echo 'Создание таблиц и заполнение данными'
+psql -h $IP -p 5432 --username=postgres authors < $DIRECTORY/pg_dump/authors.sql || exit
+psql -h $IP -p 5432 --username=postgres books < $DIRECTORY/pg_dump/books.sql || exit
+psql -h $IP -p 5432 --username=postgres publishers < $DIRECTORY/pg_dump/publishers.sql || exit
+psql -h $IP -p 5432 --username=postgres users < $DIRECTORY/pg_dump/users.sql || exit
 
 
 #Запуск

@@ -1,17 +1,17 @@
 version: "3"
 services:
-#  web:
-#    build:
-#      context: .
-#      dockerfile: web.dockerfile
-#    expose:
-#      - "9000"
-#    ports:
-#      - '9000:9000'
-#    volumes:
-#      - ./:/DigitalPayment
-#    networks:
-#      - default
+  web:
+    build:
+      context: .
+      dockerfile: web.dockerfile
+    expose:
+      - "9000"
+    ports:
+      - '9000:9000'
+    volumes:
+      - ./:/DigitalPayment
+    networks:
+      - default
   users:
     build:
       context: .
