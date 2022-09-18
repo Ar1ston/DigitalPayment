@@ -1,0 +1,50 @@
+version: "3"
+services:
+#  web:
+#    build:
+#      context: .
+#      dockerfile: web.dockerfile
+#    expose:
+#      - "9000"
+#    ports:
+#      - '9000:9000'
+#    volumes:
+#      - ./:/DigitalPayment
+#    networks:
+#      - default
+  users:
+    build:
+      context: .
+      dockerfile: users.dockerfile
+    volumes:
+      - ./:/DigitalPayment
+    restart: always
+    networks:
+      - default
+  authors:
+    build:
+      context: .
+      dockerfile: authors.dockerfile
+    volumes:
+      - ./:/DigitalPayment
+    restart: always
+    networks:
+      - default
+  books:
+    build:
+      context: .
+      dockerfile: books.dockerfile
+    volumes:
+      - ./:/DigitalPayment
+    restart: always
+    networks:
+      - default
+  publishers:
+    build:
+      context: .
+      dockerfile: publishers.dockerfile
+    volumes:
+      - ./:/DigitalPayment
+    restart: always
+    networks:
+      - default

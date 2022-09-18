@@ -1,0 +1,38 @@
+{{template "header.html" .}}
+<br>
+<title>Add Book</title>
+<a>Add Book</a>
+<form method="post">
+    <br>
+    <label for="Name">Name</label><input type="text" id="Name" name="Name" placeholder="Name" value="">
+
+    <br>
+    <label for="Genre">Genre</label><input type="text" id="Genre" name="Genre" placeholder="Genre" value="">
+    <br>
+
+    <label>Author
+        <select name="author" required="required">
+            <option value=0>Неизвестен</option>
+            {{range .authors}}
+                <option value={{ .Id}}>{{ .Name}}</option>
+            {{end}}
+        </select>
+    </label>
+    <br>
+
+    <label> Publisher
+        <select name="publisher" required="required">
+            <option value=0>Неизвестен</option>
+            {{range .publishers}}
+            <option value={{ .Id}}>{{ .Name}}</option>
+            {{end}}
+        </select>
+    </label>
+    <br>
+    
+    <label for="Description">Description</label><input type="text" id="Description" name="Description" placeholder="Description" value="">
+    <br>
+    <button type="submit">Add</button>
+
+</form>
+{{template "footer.html" .}}

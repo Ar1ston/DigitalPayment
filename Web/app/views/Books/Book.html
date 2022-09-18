@@ -1,0 +1,36 @@
+{{template "header.html" .}}
+<br>
+<a>Book</a>
+<br>
+<a href="Book/Remove?id={{ .id}}">Remove book</a>
+<br>
+<a href="Book/Change?id={{ .id}}">Change book</a>
+<div>
+    <b>"{{ .name}}"</b>
+    <br>
+
+    <span>Издательство:</span>
+    <a href="/Publisher?id={{ .id_publisher}}">{{ .publisher}}</a>
+    <br>
+
+    <span>Автор:</span>
+    <a href="/Author?id={{ .id_author}}">{{ .author}}</a>
+    <br>
+
+    <span>Жанр:</span>
+    <b> {{ .genre}}</b>
+    <br>
+
+    <span>Дата добавления:</span>
+    <b> {{ .added_Time}}</b>
+    <br>
+
+    <span>Добавил пользователь:</span>
+    <a href="/User?id={{ .user_id}}">{{ .added_User}}</a>
+    <br>
+
+    <b>Описание:</b>
+    <br>
+    <span>{{ .description}}</span>
+</div>
+{{template "footer.html" .}}

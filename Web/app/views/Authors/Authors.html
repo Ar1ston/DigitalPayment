@@ -1,0 +1,21 @@
+{{template "header.html" .}}
+<br>
+<a>Authors</a>
+<br>
+<a href="Author/Create">Add author</a>
+<br>
+<ul>
+    {{range .auth}}
+    <li>
+        <div>
+            <a href="/Author?id={{ .Id}}">{{ .FirstName}} {{ .LastName}}</a>
+        </div>
+    </li>
+    {{else}}
+    <li><b>no authors</b></li>
+    {{end}}
+
+</ul>
+
+
+{{template "footer.html" .}}

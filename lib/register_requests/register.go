@@ -6,7 +6,8 @@ import (
 )
 
 var registeredMessages map[string]registeredRequest
-var registeredRequestType map[string]string
+
+//var registeredRequestType map[string]string
 var requestInterfaceType = reflect.TypeOf((*Models.Logic)(nil)).Elem()
 
 type registeredRequest struct {
@@ -14,7 +15,7 @@ type registeredRequest struct {
 }
 
 func init() {
-	registeredRequestType = make(map[string]string, 10)
+	//registeredRequestType = make(map[string]string, 10)
 	registeredMessages = make(map[string]registeredRequest, 10)
 }
 
@@ -31,7 +32,7 @@ func Register(request string, requestType Models.Logic) {
 	obj.request = tmp.Elem()
 
 	registeredMessages[request] = obj
-	registeredRequestType[tmp.String()] = request
+	//registeredRequestType[tmp.String()] = request
 }
 func (obj *registeredRequest) CreateRequest() Models.Logic {
 	return reflect.New(obj.request).Interface().(Models.Logic)

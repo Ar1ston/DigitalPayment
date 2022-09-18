@@ -1,0 +1,17 @@
+{{template "header.html" .}}
+<br>
+<a>User</a>
+<br>
+<a href="User/Remove?id={{ .id}}">Delete user</a>
+{{if ne .Level 3}}
+<a href="User/ChangeLevel?id={{ .id}}&level=1">Up user</a>
+{{end}}
+{{if ne .Level 1}}
+<a href="User/ChangeLevel?id={{ .id}}&level=-1">Down user</a>
+{{end}}
+
+<div>
+  <b>{{ .Name}} ({{ .Login}})</b>
+  <b>Level: {{ .Level}}</b>
+</div>
+{{template "footer.html" .}}
