@@ -6,7 +6,7 @@
 module:testrunner
 # module:jobs
 
-
+GET / Login.Login
 GET     /Login                                       Login.Login
 POST     /Login                                       Login.Login
 

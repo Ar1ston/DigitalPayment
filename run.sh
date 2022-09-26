@@ -1,7 +1,11 @@
 #!/bin/bash
-IP="192.168.0.104"
+WHITELIST=true
+IP="192.168.20.141"
+
+
 DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`
 echo 'Создание и старт контейнеров'
+sudo docker network create net
 sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml build || exit
 sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml up --no-start || exit
 sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml start || exit
@@ -25,6 +29,7 @@ sudo su - postgres <<EOF
     exit
 EOF
 echo 'Создание таблиц и заполнение данными'
+export PGPASSWORD="password"
 psql -h $IP -p 5432 --username=postgres authors < $DIRECTORY/pg_dump/authors.sql || exit
 psql -h $IP -p 5432 --username=postgres books < $DIRECTORY/pg_dump/books.sql || exit
 psql -h $IP -p 5432 --username=postgres publishers < $DIRECTORY/pg_dump/publishers.sql || exit

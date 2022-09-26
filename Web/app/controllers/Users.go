@@ -4,6 +4,7 @@ import (
 	"Web/conf/NATS"
 	"fmt"
 	"github.com/revel/revel"
+	"strconv"
 )
 
 type Users struct {
@@ -65,10 +66,10 @@ func (c Users) Users() revel.Result {
 		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
-	if respService.Errno != 0 {
-		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
-	}
+	//if respService.Errno != 0 {
+	//	fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+	//	return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
+	//}
 
 	var usrs []user
 	usrs = respService.Users
@@ -111,7 +112,11 @@ func (c Users) Remove(id int) revel.Result {
 	if c.Session["level"] != "3" {
 		return c.Redirect(Error.Error, 409, "No access")
 	}
-
+	atoi, _ := strconv.Atoi(fmt.Sprint(c.Session["level"]))
+	if atoi == id {
+		fmt.Printf("ERROR SERVICE(code %d): %s", 500, "You can't delete yourself")
+		return c.Redirect(Error.Error, 500, "You can't delete yourself")
+	}
 	var reqService requestRemoveUser
 	reqService.Id = uint64(id)
 

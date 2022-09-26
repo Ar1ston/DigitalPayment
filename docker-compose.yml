@@ -1,17 +1,23 @@
-version: "3"
+version: "3.7"
 services:
   web:
+    container_name: web
+    networks:
+      - net
     build:
       context: .
       dockerfile: web.dockerfile
-    expose:
-      - "9000"
     ports:
       - '9000:9000'
+    environment:
+      HOME: /root
+      GOPATH: ${HOME}/go
+      PATH: ${PATH}:${GOPATH}/bin:/usr/local/go/bin
+      GOBIN: ${GOPATH}/bin
+    working_dir: ${GOPATH}/src/DigitalPayment/Web
     volumes:
-      - ./:/DigitalPayment
-    networks:
-      - default
+      - ./:${GOPATH}/src/DigitalPayment/
+    command: sh -c "go get github.com/revel/revel; go install github.com/revel/cmd/revel; go mod download; revel run"
   users:
     build:
       context: .
@@ -20,7 +26,7 @@ services:
       - ./:/DigitalPayment
     restart: always
     networks:
-      - default
+      - net
   authors:
     build:
       context: .
@@ -29,7 +35,7 @@ services:
       - ./:/DigitalPayment
     restart: always
     networks:
-      - default
+      - net
   books:
     build:
       context: .
@@ -38,7 +44,7 @@ services:
       - ./:/DigitalPayment
     restart: always
     networks:
-      - default
+      - net
   publishers:
     build:
       context: .
@@ -47,4 +53,9 @@ services:
       - ./:/DigitalPayment
     restart: always
     networks:
-      - default
+      - net
+networks:
+  net:
+    driver: bridge
+    external: true
+    name: net

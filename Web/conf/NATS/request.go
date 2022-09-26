@@ -48,7 +48,7 @@ func RequestToNats(To string, From string, RequestName string, Request interface
 
 	//конфиг
 	var connectNATS ConnectNATS
-	connectNATS.Host = "localhost"
+	connectNATS.Host = "192.168.20.141"
 	connectNATS.Port = "4222"
 
 	ConnNats, err := connectNATS.ConnectToNATS()

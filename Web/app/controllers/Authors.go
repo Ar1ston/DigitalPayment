@@ -61,10 +61,10 @@ func (c Authors) Authors() revel.Result {
 		return c.Redirect(Error.Error, 500, "Error server")
 	}
 
-	if respService.Errno != 0 {
-		fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
-		return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
-	}
+	//if respService.Errno != 0 {
+	//	fmt.Printf("ERROR SERVICE(code %d): %s", respService.Errno, respService.Error)
+	//	return c.Redirect(Error.Error, int(respService.Errno), respService.Error)
+	//}
 	var auth []author
 	auth = respService.Authors
 

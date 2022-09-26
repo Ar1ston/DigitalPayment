@@ -52,7 +52,7 @@ func FindBooks(db *gorm.DB, where map[string]interface{}) (*Books, error) {
 		return nil, tx.Error
 	}
 	if tx.RowsAffected == 0 {
-		return nil, fmt.Errorf("%s%s%s", "Записи в БД ", tablename_books, " не найдены")
+		return nil, fmt.Errorf("записи в БД %s не найдены", tablename_books)
 	}
 	return &booksData, nil
 }
@@ -63,9 +63,9 @@ func CreateBook(db *gorm.DB, book *Book) (*Book, error) {
 
 	//проверка, что такая книга уже есть
 	tx, err := FindBooks(db, map[string]interface{}{
-		"name":      book.Name,
-		"author":    book.Author,
-		"publisher": book.Publisher,
+		"Name":      book.Name,
+		"Author":    book.Author,
+		"Publisher": book.Publisher,
 	})
 
 	if err == nil && tx.Books != nil {
