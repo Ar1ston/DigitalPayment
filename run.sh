@@ -1,6 +1,6 @@
 #!/bin/bash
 WHITELIST=true
-IP="192.168.20.141"
+IP="192.168.0.112"
 
 
 DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`

@@ -1,6 +1,7 @@
 package NATS
 
 import (
+	"Web/conf/parameters"
 	"bytes"
 	"encoding/gob"
 	"encoding/json"
@@ -48,8 +49,8 @@ func RequestToNats(To string, From string, RequestName string, Request interface
 
 	//конфиг
 	var connectNATS ConnectNATS
-	connectNATS.Host = "192.168.20.141"
-	connectNATS.Port = "4222"
+	connectNATS.Host = parameters.ParamsService.NatsHost
+	connectNATS.Port = parameters.ParamsService.NatsPort
 
 	ConnNats, err := connectNATS.ConnectToNATS()
 	if err != nil {

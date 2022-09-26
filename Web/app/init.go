@@ -1,6 +1,7 @@
 package app
 
 import (
+	"Web/conf/parameters"
 	_ "github.com/revel/modules"
 	"github.com/revel/revel"
 )
@@ -14,6 +15,7 @@ var (
 )
 
 func init() {
+	parameters.ParamsService.LoadINI("config.ini")
 	// Filters is the default set of global filters.
 	revel.Filters = []revel.Filter{
 		revel.PanicFilter,             // Recover from panics and display an error page instead.
