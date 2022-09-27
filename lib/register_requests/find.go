@@ -7,7 +7,7 @@ import (
 
 func FindStruct(method string) (Models.Logic, error) {
 
-	registered, ok := registeredMessages[method]
+	registered, ok := registeredRequests[method]
 	if !ok {
 		return nil, fmt.Errorf("%s", "Метод не найден")
 	}

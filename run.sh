@@ -1,14 +1,14 @@
 #!/bin/bash
 WHITELIST=true
-IP="192.168.0.112"
+IP="192.168.20.141"
 
 
 DIRECTORY=`dirname "$ABSOLUTE_FILENAME"`
 echo 'Создание и старт контейнеров'
 sudo docker network create net
-sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml build || exit
-sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml up --no-start || exit
-sudo docker-compose -f $DIRECTORY/pg_dump/docker-compose.yml start || exit
+sudo docker-compose -f $DIRECTORY/docker-compose-db.yml build || exit
+sudo docker-compose -f $DIRECTORY/docker-compose-db.yml up --no-start || exit
+sudo docker-compose -f $DIRECTORY/docker-compose-db.yml start || exit
 
 echo 'Ждем 5 сек'
 sleep 5
